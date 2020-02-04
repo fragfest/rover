@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  rover:
+    image: ${DOCKER_REGISTRY-}rover
+    build:
+      context: .
+      dockerfile: rover/Dockerfile
