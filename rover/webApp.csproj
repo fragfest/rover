@@ -8,4 +8,9 @@
 
 
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'rover' ">
+    <StartAction>Project</StartAction>
+    <ApplicationURL>https://localhost:5001;http://localhost:5000</ApplicationURL>
+    <LaunchBrowser>false</LaunchBrowser>
+  </PropertyGroup>
 </Project>
