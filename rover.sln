@@ -7,6 +7,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "webApp-docker-compose", "we
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webSvc", "webSvc\webSvc.csproj", "{9639B5AE-B426-42CF-BC02-B3FAECFD515F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webSvcTests", "webSvcTests\webSvcTests.csproj", "{185BD8AC-B689-41BA-A75C-6E92DBC4842F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,5 +27,9 @@ Global
 		{9639B5AE-B426-42CF-BC02-B3FAECFD515F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9639B5AE-B426-42CF-BC02-B3FAECFD515F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9639B5AE-B426-42CF-BC02-B3FAECFD515F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{185BD8AC-B689-41BA-A75C-6E92DBC4842F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{185BD8AC-B689-41BA-A75C-6E92DBC4842F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{185BD8AC-B689-41BA-A75C-6E92DBC4842F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{185BD8AC-B689-41BA-A75C-6E92DBC4842F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

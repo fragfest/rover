@@ -1,11 +1,13 @@
 using System;
 using System.Drawing;
 using System.IO;
+using webSvc.App;
 
 namespace webSvc
 {
     public class RoverImages
     {
+        //TODO get value from RoverPath class
         private int cellSizePx = 30;
 
         public RoverImages(string missionId){
@@ -29,6 +31,10 @@ namespace webSvc
                 var gridStartX = 0; ;
                 var gridStartY = 0; ;
                 var gridStartDirection = "N";
+
+                var roverPath = new RoverPath(gridWidth, gridHeight);
+                roverPath.SetStart(1, 2, "N");
+                roverPath.createRoverPath("LMR");
                 createRoverPath(bmpOut, gridWidthPx, gridHeightPx, gridStartX, gridStartY, gridStartDirection);
                 bmpOut.Save(missionId + ".png");
             }
