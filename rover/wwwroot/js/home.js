@@ -21,6 +21,9 @@
     },
     mounted: function () {
         // origin (0,0) is defined in the bottom left (not top left)
+
+        //TODO replace with updateRover()
+
         this.rover.y = this.grid.height - 1;
         this.rover.startY = 0;
     },
@@ -44,24 +47,54 @@
         },
 
         updateRover: function () {
-            //TODO validate inputs > 0 && < grid width, height
-
-            var startY = parseInt(this.rover.startY);
-            var startX = parseInt(this.rover.startX);
+            var startY = parseInt(this.rover.startY) || 0;
+            var startX = parseInt(this.rover.startX) || 0;
+            if (startY < 0) {
+                this.rover.startY = 0;
+                startY = 0;
+            }
+            if (startY > this.grid.height - 1) {
+                this.rover.startY = this.grid.height - 1;
+                startY = this.grid.height - 1;
+            }
+            if (startX < 0) {
+                this.rover.startX = 0;
+                startX = 0;
+            }
+            if (startX > this.grid.width - 1) {
+                this.rover.startX = this.grid.width - 1;
+                startX = this.grid.width - 1;
+            }
 
             this.rover.y = this.grid.height - startY - 1;
             this.rover.x = startX;
         },
 
         updateGridInput: function () {
-            //TODO validate inputs > 0 && < maxDimension
-
             var widthNum = parseInt(this.grid.widthInput) || 0;
             var heightNum = parseInt(this.grid.heightInput) || 0;
+            if (widthNum < 0) {
+                this.grid.widthInput = 0;
+                widthNum = 0;
+            }
+            if (heightNum < 0) {
+                this.grid.heightInput = 0;
+                heightNum = 0;
+            }
+            if (widthNum > this.grid.maxDimension) {
+                this.grid.widthInput = this.grid.maxDimension;
+                widthNum = this.grid.maxDimension;
+            }
+            if (heightNum > this.grid.maxDimension) {
+                this.grid.heightInput = this.grid.maxDimension;
+                heightNum = this.grid.maxDimension;
+            }
 
             this.grid.width = widthNum;
             this.grid.widthPx = widthNum * this.grid.cellPx;
             this.grid.height = heightNum;
+
+            this.updateRover();
         },
 
         serverGetGrid: function serverGetGrid(width, height) {
