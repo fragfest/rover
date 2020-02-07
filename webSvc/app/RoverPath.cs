@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace webSvc.App
 {
-    //TODO origin of RoverPath grid is in lower left corner. annotate?
+
     public class RoverPath
     {
         public readonly int cellSizePx = 30;
@@ -14,6 +14,9 @@ namespace webSvc.App
         public readonly int gridHeight;
         private IList<PathPoint> PathArr;
 
+        /// <summary>
+        /// <para>Grid for a rover to create a path on. Note: origin (0,0) is in the lower left corner of the grid.</para>
+        /// </summary>
         public RoverPath(int gridWidth, int gridHeight, PathPoint startPoint)
         {
             var gridWidthMax = imageWidthPx / cellSizePx;
@@ -36,11 +39,17 @@ namespace webSvc.App
             );
         }
 
+        /// <summary>
+        /// <para>Get number of grid positions rover has explored.</para>
+        /// </summary>
         public int GetNumPositions()
         {
             return PathArr.Count;
         }
 
+        /// <summary>
+        /// <para>Get grid point that rover has explored using zero-based index.</para>
+        /// </summary>
         public PathPoint GetPathPoint(int index)
         {
             var point = PathArr[index];
@@ -51,10 +60,13 @@ namespace webSvc.App
             );
         }
 
-        public void createRoverPath(string controlStr)
+        /// <summary>
+        /// <para>create a rover path using an input string.</para>
+        /// </summary>
+        public void createRoverPath(string inputStr)
         {
 
-            var controlChars = controlStr.ToCharArray();
+            var controlChars = inputStr.ToCharArray();
             foreach (var c in controlChars)
             {
                 addToPath(c);
@@ -145,7 +157,7 @@ namespace webSvc.App
         }
     }
 
-    //TODO move class and enum to new file
+
     public class PathPoint
     {
         public int X { private set; get; }

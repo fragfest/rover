@@ -63,5 +63,26 @@ namespace webSvcTests
             Assert.AreEqual(PathDirection.East, roverPath.GetPathPoint(11).Dir);
         }
 
+        [Test]
+        public void createRoverPath_TestExamples()
+        {
+            var startPoint = new PathPoint(1, 2, "N");
+            roverPath = new RoverPath(5, 5, startPoint);
+            roverPath.createRoverPath("LMLMLMLMM");
+            var numPositions = roverPath.GetNumPositions();
+            Assert.AreEqual(1, roverPath.GetPathPoint(numPositions - 1).X);
+            Assert.AreEqual(3, roverPath.GetPathPoint(numPositions - 1).Y);
+            Assert.AreEqual(PathDirection.North, roverPath.GetPathPoint(numPositions - 1).Dir);
+
+            startPoint = new PathPoint(3, 3, "E");
+            roverPath = new RoverPath(5, 5, startPoint);
+
+            roverPath.createRoverPath("MMRMMRMRRM");
+            numPositions = roverPath.GetNumPositions();
+            Assert.AreEqual(5, roverPath.GetPathPoint(numPositions - 1).X);
+            Assert.AreEqual(1, roverPath.GetPathPoint(numPositions - 1).Y);
+            Assert.AreEqual(PathDirection.East, roverPath.GetPathPoint(numPositions - 1).Dir);
+        }
+
     }
 }
