@@ -1,10 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Mission Control";
 }
-
 @section Scripts {
     <script src="~/js/home.js" asp-append-version="false"></script>
 }
+
 <div id="home" v-cloak>
 
     <h1>Mission Control</h1>
@@ -12,14 +12,14 @@
     <hr>
 
     <h3>Mars Destination</h3>
-    <p>Select the width and height of the target Mars plateau to investigate.</p>
+    <p>Dimensions of the Mars target plateau to investigate.</p>
     <div class="row">
         <div class="col-lg-6">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Width</span>
                 </div>
-                <input type="number" class="form-control" v-model="grid.width">
+                <input type="number" class="form-control" v-model="grid.widthInput" v-on:input="updateGridInput" min="0" v-bind:max="grid.maxDimension">
             </div>
         </div>
         <div class="col-lg-6">
@@ -27,9 +27,60 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">Height</span>
                 </div>
-                <input type="number" class="form-control" v-model="grid.height">
+                <input type="number" class="form-control" v-model="grid.heightInput" v-on:input="updateGridInput" min="0" v-bind:max="grid.maxDimension">
             </div>
         </div>
     </div>
+
+    <!-- controls row START-->
+    <div class="row">
+
+        <div class="col-lg-6">
+            <h3>Rover Control</h3>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Starting coordinates</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">x</span>
+                        </div>
+                        <input type="number" class="form-control" v-model="rover.startX" v-on:input="updateRover">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">y</span>
+                        </div>
+                        <input type="number" class="form-control" v-model="rover.startY" v-on:input="updateRover">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Input instructions</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <h3>Rover Path</h3>
+            <table class="grid-input table table-bordered" align="left" v-bind:style="{ width: grid.widthPx + 'px' }">
+                <tbody>
+                    <tr v-for="(h, y) in grid.height">
+                        <td v-show="isRoverCell(x, y)" v-for="(w, x) in grid.width" style="background-color: red"></td>
+                        <td v-show="!isRoverCell(x, y)" v-for="(w, x) in grid.width"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <!-- controls row END-->
+
 
 </div>

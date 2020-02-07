@@ -1,17 +1,49 @@
 ﻿var home = new Vue({
     el: '#home',
     data: {
+        rover: {
+            x: 0,
+            y: 0,
+            startX: 0,
+            startY: 0,
+        },
         grid: {
-            width: null,
-            height: null,
+            maxDimension: 30,
+            cellPx: 30,
+            widthInput: 10,
+            heightInput: 10,
+            widthPx: 0,
+            width: 10,
+            height: 10,
         }
     },
     mounted: function () {
-        console.log('VUE mounted');
-        this.serverGetGrid(10, 10);
+        this.rover.y = this.grid.height - 1;
+        this.rover.startY = this.grid.height - 1;
     },
 
     methods: {
+        updateRover: function () {
+        },
+
+        isRoverCell: function (x, y) {
+            if (this.rover.x === x && this.rover.y === y) {
+                return true;
+            }
+            return false;
+        },
+
+        updateGridInput: function () {
+            //TODO validate inputs > 0 && < maxDimension
+
+            var widthNum = parseInt(this.grid.widthInput) || 0;
+            var heightNum = parseInt(this.grid.heightInput) || 0;
+
+            this.grid.width = widthNum;
+            this.grid.widthPx = widthNum * this.grid.cellPx;
+            this.grid.height = heightNum;
+        },
+
         serverGetGrid: function serverGetGrid(width, height) {
             $.ajax({
                 url: 'https://localhost:5003/roverimages',
@@ -21,7 +53,6 @@
                 //dataType: 'json',
                 //contentType: 'application/json; charset=utf-8',
                 type: 'GET',
-                headers: {},
                 success: function (data, status, xhr) {
                     console.log('SUCCESS')
                     //resolve();
