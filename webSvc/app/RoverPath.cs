@@ -12,8 +12,7 @@ namespace webSvc.App
 
         public readonly int gridWidth;
         public readonly int gridHeight;
-        public PathPoint startPoint { private set; get; }
-        public List<PathPoint> PathArr { private set; get; }
+        private IList<PathPoint> PathArr;
 
         public RoverPath(int gridWidth, int gridHeight, PathPoint startPoint)
         {
@@ -22,55 +21,98 @@ namespace webSvc.App
             this.gridWidth = gridWidth < gridWidthMax ? gridWidth : gridWidthMax;
             this.gridHeight = gridHeight < gridHeightMax ? gridHeight : gridHeightMax;
             this.PathArr = new List<PathPoint>();
-            SetStart(startPoint);
+            this.SetStart(startPoint);
         }
 
-        private void SetStart(PathPoint startPoint) {
+        private void SetStart(PathPoint startPoint)
+        {
             var x = startPoint.X > 0 ? startPoint.X : 0;
             var y = startPoint.Y > 0 ? startPoint.Y : 0;
             var startX = x < gridWidth ? x : gridWidth;
             var startY = y < gridHeight ? y : gridHeight;
             var startDir = startPoint.Dir;
-            this.startPoint = new PathPoint(startX, startY, startDir);
+            this.PathArr.Add(
+                new PathPoint(startX, startY, startDir)
+            );
         }
 
-        public void createRoverPath(string controlStr) {
-            //TODO init start fields if null
+        public int GetNumPositions()
+        {
+            return this.PathArr.Count;
+        }
+
+        public PathPoint GetPathPoint(int index)
+        {
+            var point = this.PathArr[index];
+            return new PathPoint(
+                point.X,
+                point.Y,
+                point.Dir
+            );
+        }
+
+        public void createRoverPath(string controlStr)
+        {
 
             var controlChars = controlStr.ToCharArray();
-            foreach (var c in controlChars) {
-                this.addPath(c);
+            foreach (var c in controlChars)
+            {
+                this.addToPath(c);
             }
         }
 
-        private void addPath(char command) {
-            PathPoint nextPoint = null;
-            var startPoint = this.startPoint ?? new PathPoint(0, 0, "N");
+        private void addToPath(char command)
+        {
             var count = this.PathArr.Count;
-            var lastPoint = count > 0 ? this.PathArr[count - 1] : startPoint ;
+            var index = count - 1;
+            var lastPoint = this.PathArr[index];
 
-            switch (char.ToUpper(command)) {
+            switch (char.ToUpper(command))
+            {
                 case 'L':
-                    //nextPoint = this.rotateWest(lastPoint);
+                    var dirLeft = this.rotateLeft(lastPoint);
+                    this.PathArr[index] = new PathPoint(lastPoint.X, lastPoint.Y, dirLeft);
+                    break;
+                case 'R':
+                    var dirRight = this.rotateRight(lastPoint);
+                    this.PathArr[index] = new PathPoint(lastPoint.X, lastPoint.Y, dirRight);
                     break;
             }
-            if (nextPoint != null) {
-                this.PathArr.Add(nextPoint);
-            }
         }
 
-        //private PathPoint rotateWest(PathPoint prevPoint) {
-        //    return new PathPoint(prevPoint.X, prevPoint.Y, prevPoint.Dir);
-        //}
+        private PathDirection rotateRight(PathPoint prevPoint)
+        {
+            var dirIntMax = this.getPathDirectionIntMax();
+            var dirInt = (int)prevPoint.Dir;
+            var dirIntRotated = dirInt + 1;
+            var dirIntNew = dirIntRotated <= dirIntMax ? dirIntRotated : 0;
+            return (PathDirection)dirIntNew;
+        }
+
+        private PathDirection rotateLeft(PathPoint prevPoint)
+        {
+            var dirIntMax = this.getPathDirectionIntMax();
+            var dirInt = (int)prevPoint.Dir;
+            var dirIntRotated = dirInt - 1;
+            var dirIntNew = dirIntRotated >= 0 ? dirIntRotated : dirIntMax;
+            return (PathDirection)dirIntNew;
+        }
+
+        private int getPathDirectionIntMax() {
+            var dirIntArr = (int[])Enum.GetValues(typeof(PathDirection));
+            return dirIntArr[dirIntArr.Length - 1];
+        }
     }
 
     //TODO move class and enum to new file
-    public class PathPoint {
+    public class PathPoint
+    {
         public int X { private set; get; }
         public int Y { private set; get; }
         public PathDirection Dir { private set; get; }
 
-        public PathPoint(int x, int y, string dir) {
+        public PathPoint(int x, int y, string dir)
+        {
             this.X = x;
             this.Y = y;
 
@@ -102,9 +144,9 @@ namespace webSvc.App
 
     public enum PathDirection
     {
-        West,
+        North = 0,
         East,
         South,
-        North
+        West
     }
 }
