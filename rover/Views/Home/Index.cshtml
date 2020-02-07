@@ -5,8 +5,20 @@
 @section Scripts {
     <script src="~/js/home.js" asp-append-version="true"></script>
 }
+<div id="home" v-cloak>
 
-<div class="text-center">
-    <h1 class="display-4">Mission Control</h1>
-    <p>Plan rover missions from here. When all rover paths have been created, launch the mission to Mars</p>
+    <div class="text-center">
+        <h1 class="display-4">Mission Control</h1>
+        <p>Plan rover missions from here. When all rover paths have been created, launch the mission to Mars</p>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-2">
+            <p>{{ message }}</p>
+        </div>
+        <div class="col-lg-10">
+            BLA
+        </div>
+
+    </div>
 </div>
