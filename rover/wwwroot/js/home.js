@@ -1,7 +1,10 @@
 ﻿var home = new Vue({
     el: '#home',
     data: {
-        message: 'Hello Vue!'
+        grid: {
+            width: null,
+            height: null,
+        }
     },
     mounted: function () {
         console.log('VUE mounted');

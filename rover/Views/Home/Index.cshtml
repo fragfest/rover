@@ -1,24 +1,35 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Mission Control";
 }
 
 @section Scripts {
-    <script src="~/js/home.js" asp-append-version="true"></script>
+    <script src="~/js/home.js" asp-append-version="false"></script>
 }
 <div id="home" v-cloak>
 
-    <div class="text-center">
-        <h1 class="display-4">Mission Control</h1>
-        <p>Plan rover missions from here. When all rover paths have been created, launch the mission to Mars</p>
-    </div>
+    <h1>Mission Control</h1>
+    <p>Plan rover missions from here. When all rover paths have been created, launch the mission to Mars</p>
+    <hr>
 
+    <h3>Mars Destination</h3>
+    <p>Select the width and height of the target Mars plateau to investigate.</p>
     <div class="row">
-        <div class="col-lg-2">
-            <p>{{ message }}</p>
+        <div class="col-lg-6">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Width</span>
+                </div>
+                <input type="number" class="form-control" v-model="grid.width">
+            </div>
         </div>
-        <div class="col-lg-10">
-            BLA
+        <div class="col-lg-6">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Height</span>
+                </div>
+                <input type="number" class="form-control" v-model="grid.height">
+            </div>
         </div>
-
     </div>
+
 </div>

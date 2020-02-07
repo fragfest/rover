@@ -5,6 +5,19 @@ for details on configuring this project to bundle and minify static web assets. 
     display: none
 }
 
+h1, h2, h3, h4 {
+    color: cornflowerblue;
+}
+
+hr {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+input {
+    max-width: 70px;
+}
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;
