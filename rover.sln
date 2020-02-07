@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webApp", "rover\webApp.csproj", "{75708917-D732-45C5-930A-3FC969C2E254}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "webApp-docker-compose", "webApp-docker-compose.dcproj", "{6EB42ACC-AFFD-48E1-9508-A0E1BA98E113}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webSvc", "webSvc\webSvc.csproj", "{9639B5AE-B426-42CF-BC02-B3FAECFD515F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webSvcTests", "webSvcTests\webSvcTests.csproj", "{185BD8AC-B689-41BA-A75C-6E92DBC4842F}"
@@ -19,10 +17,6 @@ Global
 		{75708917-D732-45C5-930A-3FC969C2E254}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75708917-D732-45C5-930A-3FC969C2E254}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75708917-D732-45C5-930A-3FC969C2E254}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6EB42ACC-AFFD-48E1-9508-A0E1BA98E113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6EB42ACC-AFFD-48E1-9508-A0E1BA98E113}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6EB42ACC-AFFD-48E1-9508-A0E1BA98E113}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6EB42ACC-AFFD-48E1-9508-A0E1BA98E113}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9639B5AE-B426-42CF-BC02-B3FAECFD515F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9639B5AE-B426-42CF-BC02-B3FAECFD515F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9639B5AE-B426-42CF-BC02-B3FAECFD515F}.Release|Any CPU.ActiveCfg = Release|Any CPU
