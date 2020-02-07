@@ -31,9 +31,9 @@ namespace webSvc
                 var gridStartX = 0; ;
                 var gridStartY = 0; ;
                 var gridStartDirection = "N";
+                var startPoint = new PathPoint(gridStartX, gridStartY, gridStartDirection);
 
-                var roverPath = new RoverPath(gridWidth, gridHeight);
-                roverPath.SetStart(1, 2, "N");
+                var roverPath = new RoverPath(gridWidth, gridHeight, startPoint);
                 roverPath.createRoverPath("LMR");
                 createRoverPath(bmpOut, gridWidthPx, gridHeightPx, gridStartX, gridStartY, gridStartDirection);
                 bmpOut.Save(missionId + ".png");
