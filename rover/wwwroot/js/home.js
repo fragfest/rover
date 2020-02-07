@@ -4,8 +4,10 @@
         rover: {
             x: 0,
             y: 0,
+            dir: 'E',
             startX: 0,
             startY: 0,
+            startDir: 'E',
         },
         grid: {
             maxDimension: 30,
@@ -18,11 +20,29 @@
         }
     },
     mounted: function () {
+        // origin (0,0) is defined in the bottom left (not top left)
         this.rover.y = this.grid.height - 1;
         this.rover.startY = 0;
     },
 
     methods: {
+
+        isRoverCell: function (x, y) {
+            if (this.rover.x === x && this.rover.y === y) {
+                return true;
+            }
+            return false;
+        },
+
+        isNextCellRight(x, y) {
+            if (this.rover.x + 1 === x
+                && this.rover.y === y
+                && this.rover.dir === 'E') {
+                    return true;
+            }
+            return false;
+        },
+
         updateRover: function () {
             //TODO validate inputs > 0 && < grid width, height
 
@@ -31,13 +51,6 @@
 
             this.rover.y = this.grid.height - startY - 1;
             this.rover.x = startX;
-        },
-
-        isRoverCell: function (x, y) {
-            if (this.rover.x === x && this.rover.y === y) {
-                return true;
-            }
-            return false;
         },
 
         updateGridInput: function () {
@@ -70,6 +83,7 @@
                 }
             });
         }
+
     }
 
 });
