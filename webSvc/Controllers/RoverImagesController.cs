@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.IO;
+using System.Drawing.Imaging;
 
 namespace webSvc.Controllers
 {
@@ -20,10 +22,15 @@ namespace webSvc.Controllers
         }
 
         [HttpGet]
-        public ArrayList Get()
+        public ActionResult Get()
         {
             var roverImages = new RoverImages("1");
-            return new ArrayList();
+            var bitmap = roverImages.getScreenshot();
+            using (var outStream = new MemoryStream())
+            {
+                bitmap.Save(outStream, ImageFormat.Png);
+                return File(outStream.ToArray(), "image/png");
+            }
         }
     }
 }

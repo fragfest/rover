@@ -7,29 +7,32 @@ namespace webSvc
 {
     public class RoverImages
     {
-        public RoverImages(string missionId)
+        public RoverImages(string missionId) {
+            //TODO move stuff here
+        }
+
+        public Bitmap getScreenshot()
         {
             //TODO get saved values from mission.json
             var gridWidth = 10;
             var gridHeight = 10;
-
             //hardcoded
             var path = "logo.png";
 
-            using (var stream = File.OpenRead(path))
+            using (var fileStream = File.OpenRead(path))
             {
-                var bmp = new Bitmap(stream);
+                var bmp = new Bitmap(fileStream);
 
                 var startPoint = new PathPoint(0, 0, "N");
                 var roverPath = new RoverPath(gridWidth, gridHeight, startPoint);
-                roverPath.createRoverPath("MRM");
-                var gridWidthPx = roverPath.imageWidthPx;
-                var gridHeightPx = roverPath.imageHeightPx;
+                roverPath.createRoverPath("MRMMMMMMLMMMRMMMMMMMMMM");
+                var gridWidthPx = roverPath.gridWidthPx;
+                var gridHeightPx = roverPath.gridHeightPx;
 
                 var bmpOut = new Bitmap(bmp, new Size(gridWidthPx, gridHeightPx));
                 createRoverPathBmp(bmpOut, gridWidthPx, gridHeightPx, roverPath);
 
-                bmpOut.Save(missionId + ".png");
+                return bmpOut;
             }
         }
 

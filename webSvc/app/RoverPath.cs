@@ -12,6 +12,8 @@ namespace webSvc.App
 
         public readonly int gridWidth;
         public readonly int gridHeight;
+        public readonly int gridWidthPx;
+        public readonly int gridHeightPx;
         private IList<PathPoint> PathArr;
 
         /// <summary>
@@ -22,7 +24,9 @@ namespace webSvc.App
             var gridWidthMax = imageWidthPx / cellSizePx;
             var gridHeightMax = imageHeightPx / cellSizePx;
             this.gridWidth = gridWidth < gridWidthMax ? gridWidth : gridWidthMax;
+            this.gridWidthPx = this.gridWidth * cellSizePx;
             this.gridHeight = gridHeight < gridHeightMax ? gridHeight : gridHeightMax;
+            this.gridHeightPx = this.gridHeight * cellSizePx;
             PathArr = new List<PathPoint>();
             SetStart(startPoint);
         }
