@@ -20,8 +20,8 @@ namespace webSvc.App
             var gridHeightMax = imageHeightPx / cellSizePx;
             this.gridWidth = gridWidth < gridWidthMax ? gridWidth : gridWidthMax;
             this.gridHeight = gridHeight < gridHeightMax ? gridHeight : gridHeightMax;
-            this.PathArr = new List<PathPoint>();
-            this.SetStart(startPoint);
+            PathArr = new List<PathPoint>();
+            SetStart(startPoint);
         }
 
         private void SetStart(PathPoint startPoint)
@@ -31,19 +31,19 @@ namespace webSvc.App
             var startX = x < gridWidth ? x : gridWidth;
             var startY = y < gridHeight ? y : gridHeight;
             var startDir = startPoint.Dir;
-            this.PathArr.Add(
+            PathArr.Add(
                 new PathPoint(startX, startY, startDir)
             );
         }
 
         public int GetNumPositions()
         {
-            return this.PathArr.Count;
+            return PathArr.Count;
         }
 
         public PathPoint GetPathPoint(int index)
         {
-            var point = this.PathArr[index];
+            var point = PathArr[index];
             return new PathPoint(
                 point.X,
                 point.Y,
@@ -57,32 +57,73 @@ namespace webSvc.App
             var controlChars = controlStr.ToCharArray();
             foreach (var c in controlChars)
             {
-                this.addToPath(c);
+                addToPath(c);
             }
         }
 
         private void addToPath(char command)
         {
-            var count = this.PathArr.Count;
+            var count = PathArr.Count;
             var index = count - 1;
-            var lastPoint = this.PathArr[index];
+            var lastPoint = PathArr[index];
 
             switch (char.ToUpper(command))
             {
                 case 'L':
-                    var dirLeft = this.rotateLeft(lastPoint);
-                    this.PathArr[index] = new PathPoint(lastPoint.X, lastPoint.Y, dirLeft);
+                    var dirLeft = rotateLeft(lastPoint);
+                    PathArr[index] = new PathPoint(lastPoint.X, lastPoint.Y, dirLeft);
                     break;
                 case 'R':
-                    var dirRight = this.rotateRight(lastPoint);
-                    this.PathArr[index] = new PathPoint(lastPoint.X, lastPoint.Y, dirRight);
+                    var dirRight = rotateRight(lastPoint);
+                    PathArr[index] = new PathPoint(lastPoint.X, lastPoint.Y, dirRight);
+                    break;
+                case 'M':
+                    var newPoint = moveForward(lastPoint);
+                    if (newPoint != null) {
+                        PathArr.Add(newPoint);
+                    }
                     break;
             }
         }
 
+        private PathPoint moveForward(PathPoint prevPoint) {
+            var newX = prevPoint.X;
+            var newY = prevPoint.Y;
+            switch (prevPoint.Dir) {
+                case PathDirection.North:
+                    newY = prevPoint.Y + 1;
+                    break;
+                case PathDirection.South:
+                    newY = prevPoint.Y - 1;
+                    break;
+                case PathDirection.East:
+                    newX = prevPoint.X + 1;
+                    break;
+                case PathDirection.West:
+                    newX = prevPoint.X - 1;
+                    break;
+            }
+
+            var gridWidthOutOfBounds = false;
+            var gridHeightOutOfBounds = false;
+            if (newX < 0 || newX > gridWidth) {
+                gridWidthOutOfBounds = true;
+            }
+            if(newY < 0 || newY > gridHeight) {
+                gridHeightOutOfBounds = true;
+            }
+
+            if (gridWidthOutOfBounds || gridHeightOutOfBounds)
+            {
+                return null;
+            }
+
+            return new PathPoint(newX, newY, prevPoint.Dir);
+        }
+
         private PathDirection rotateRight(PathPoint prevPoint)
         {
-            var dirIntMax = this.getPathDirectionIntMax();
+            var dirIntMax = getPathDirectionIntMax();
             var dirInt = (int)prevPoint.Dir;
             var dirIntRotated = dirInt + 1;
             var dirIntNew = dirIntRotated <= dirIntMax ? dirIntRotated : 0;
@@ -91,7 +132,7 @@ namespace webSvc.App
 
         private PathDirection rotateLeft(PathPoint prevPoint)
         {
-            var dirIntMax = this.getPathDirectionIntMax();
+            var dirIntMax = getPathDirectionIntMax();
             var dirInt = (int)prevPoint.Dir;
             var dirIntRotated = dirInt - 1;
             var dirIntNew = dirIntRotated >= 0 ? dirIntRotated : dirIntMax;

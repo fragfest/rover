@@ -36,10 +36,32 @@ namespace webSvcTests
         }
 
         [Test]
-        public void createRoverPath_RotateInPlace() {
-            roverPath.createRoverPath("LLLRRRR");
-            Assert.AreEqual(1, roverPath.GetNumPositions());
+        public void createRoverPath_RotateInPlaceAndMove() {
+            roverPath.createRoverPath("LLLRRRRM");
+            Assert.AreEqual(2, roverPath.GetNumPositions());
+            Assert.AreEqual(0, roverPath.GetPathPoint(0).X);
+            Assert.AreEqual(0, roverPath.GetPathPoint(0).Y);
             Assert.AreEqual(PathDirection.East, roverPath.GetPathPoint(0).Dir);
+            Assert.AreEqual(1, roverPath.GetPathPoint(1).X);
+            Assert.AreEqual(0, roverPath.GetPathPoint(1).Y);
+            Assert.AreEqual(PathDirection.East, roverPath.GetPathPoint(1).Dir);
         }
+
+        [Test]
+        public void createRoverPath_MoveOutsideGrid()
+        {
+            roverPath.createRoverPath("LLMRRMLM");
+            Assert.AreEqual(2, roverPath.GetNumPositions());
+            Assert.AreEqual(0, roverPath.GetPathPoint(1).X);
+            Assert.AreEqual(1, roverPath.GetPathPoint(1).Y);
+            Assert.AreEqual(PathDirection.West, roverPath.GetPathPoint(1).Dir);
+
+            roverPath.createRoverPath("RRMMMMMMMMMMM");
+            Assert.AreEqual(12, roverPath.GetNumPositions());
+            Assert.AreEqual(10, roverPath.GetPathPoint(11).X);
+            Assert.AreEqual(1, roverPath.GetPathPoint(11).Y);
+            Assert.AreEqual(PathDirection.East, roverPath.GetPathPoint(11).Dir);
+        }
+
     }
 }
