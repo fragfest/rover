@@ -19,11 +19,18 @@
     },
     mounted: function () {
         this.rover.y = this.grid.height - 1;
-        this.rover.startY = this.grid.height - 1;
+        this.rover.startY = 0;
     },
 
     methods: {
         updateRover: function () {
+            //TODO validate inputs > 0 && < grid width, height
+
+            var startY = parseInt(this.rover.startY);
+            var startX = parseInt(this.rover.startX);
+
+            this.rover.y = this.grid.height - startY - 1;
+            this.rover.x = startX;
         },
 
         isRoverCell: function (x, y) {

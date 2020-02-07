@@ -5,6 +5,11 @@ for details on configuring this project to bundle and minify static web assets. 
     display: none
 }
 
+.rover {
+    width: 20px;
+    height: 20px;
+}
+
 .table-bordered td {
     border: 1px solid black;
 }
