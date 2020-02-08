@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Drawing.Imaging;
-using System.Text.Json;
 
 namespace webSvc.Controllers
 {
@@ -23,22 +22,16 @@ namespace webSvc.Controllers
         }
 
         [HttpPost]
-        public String Post()
+        public ActionResult Post(Path path)
         {
+            var input = path.input;
             int[] test = { 1, 2, 3 };
-            return JsonSerializer.Serialize(test);
+            return Ok(test);
         }
 
-        [HttpGet]
-        public ActionResult Get()
-        {
-            var roverImages = new RoverImages("1");
-            var bitmap = roverImages.getScreenshot();
-            using (var outStream = new MemoryStream())
-            {
-                bitmap.Save(outStream, ImageFormat.Png);
-                return File(outStream.ToArray(), "image/png");
-            }
-        }
+    }
+
+    public class Path {
+        public string input { get; set; }
     }
 }

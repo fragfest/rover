@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Drawing.Imaging;
-using System.Text.Json;
 
 namespace webSvc.Controllers
 {
