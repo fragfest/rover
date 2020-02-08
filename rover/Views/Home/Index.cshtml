@@ -86,11 +86,11 @@
                         <i class="fa fa-reply"></i>
                         <small><br>Rotate</small>
                     </button>
-                    <button type="button" class="btn btn-outline-info">
+                    <button type="button" class="btn btn-outline-info" v-on:click="updateRoverPath('M')" v-bind:disabled="disableMovementButtons">
                         &nbsp;<i class="fa fa-arrow-circle-o-up"></i>
                         <small><br>Move</small>
                     </button>
-                    <button type="button" class="btn btn-outline-info">
+                    <button type="button" class="btn btn-outline-info" v-on:click="updateRoverPath('R')" v-bind:disabled="disableMovementButtons">
                         <i class="fa fa-share"></i>
                         <small><br>Rotate</small>
                     </button>

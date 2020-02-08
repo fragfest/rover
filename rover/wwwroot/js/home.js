@@ -1,6 +1,9 @@
 ﻿var home = new Vue({
     el: '#home',
     data: {
+        //TODO get urls from server using page first page load. on server ideally in a config file
+        urlWebSvcRoverPath: 'https://localhost:5003/roverpath',
+
         disableMovementButtons: false,
         directions: ['North', 'South', 'East', 'West'],
         rover: {
@@ -34,29 +37,54 @@
         // Build Path, input recording
         /////////////////////////////////////////////////////////////////////
 
+        buildPathFromServer: function (pathServer) {
+            var dirStrToChar = this.dirStrToChar;
+            var gridHeight = this.grid.height;
+            var path = [];
+
+            pathServer.forEach(function (pointServer) {
+                path.push({
+                    x: pointServer.x,
+                    y: gridHeight - 1 - pointServer.y,
+                    dir: dirStrToChar(pointServer.dir)
+                });
+            });
+            var last = path[path.length - 1];
+            this.updateRover(last.x, last.y);
+        },
+
         updateRoverPath: function (newChar) {
             var ref = this;
             ref.disableMovementButtons = true;
+            var roverInput = ref.rover.input + newChar;
+            //TODO validate newChar
 
             $.ajax({
-                url: 'https://localhost:5003/roverpath',
+                url: ref.urlWebSvcRoverPath,
                 data: JSON.stringify({
-                    input: ref.rover.input
+                    input: roverInput,
+                    startX: ref.rover.startX,
+                    startY: ref.rover.startY,
+                    startDir: ref.dirStrToChar(ref.rover.startDir),
+                    gridWidth: ref.grid.width,
+                    gridHeight: ref.grid.height
                 }),
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
                 type: 'POST',
                 success: function (data, status, xhr) {
 
-                    ref.rover.input += newChar;
                     ref.disableMovementButtons = false;
-                    //TODO get back path array and draw on grid
+                    ref.rover.input = data.input;
+                    ref.buildPathFromServer(data.path || []);
 
                 },
                 error: function (xhr) {
+
                     ref.disableMovementButtons = false;
-                    //TODO display error to user
                     console.error('updateRoverPath status ' + xhr.status + ': ' + xhr.responseText);
+                    //TODO display error to user
+
                 }
             });
         },
@@ -113,8 +141,13 @@
         },
 
         /////////////////////////////////////////////////////////////////////
-        // Input
+        // Update
         /////////////////////////////////////////////////////////////////////
+
+        updateRover: function (x, y) {
+            this.rover.x = x;
+            this.rover.y = y;
+        },
 
         updateRoverStart: function () {
             var startY = parseInt(this.rover.startY) || 0;
