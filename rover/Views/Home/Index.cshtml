@@ -94,6 +94,17 @@
                         <i class="fa fa-share"></i>
                         <small><br>Rotate</small>
                     </button>
+                    <i class="fa fa-spinner fa-spin" v-show="disableMovementButtons"></i>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12" align="left">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Recorded movements</span>
+                        </div>
+                        <input type="text" class="form-control recordings" v-model="rover.input" disabled>
+                    </div>
                 </div>
             </div>
 
