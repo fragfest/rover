@@ -39,18 +39,18 @@
             ref.disableMovementButtons = true;
 
             $.ajax({
-                url: 'https://localhost:5003/roverimages',
+                url: 'https://localhost:5003/roverpath',
                 data: JSON.stringify({
-                    test: 'test'
+                    input: ref.rover.input
                 }),
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
                 type: 'POST',
                 success: function (data, status, xhr) {
 
-                    console.log('SUCCESS')
                     ref.rover.input += newChar;
                     ref.disableMovementButtons = false;
+                    //TODO get back path array and draw on grid
 
                 },
                 error: function (xhr) {
@@ -197,11 +197,9 @@
                 type: 'GET',
                 success: function (data, status, xhr) {
                     console.log('SUCCESS')
-                    //resolve();
                 },
                 error: function (xhr) {
-                    console.error('FAIL')
-                    //reject(new Error('save status ' + xhr.status + ': ' + xhr.responseText));
+                    console.error('serverGetGrid status ' + xhr.status + ': ' + xhr.responseText);
                 }
             });
         }
