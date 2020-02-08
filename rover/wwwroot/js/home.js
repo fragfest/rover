@@ -1,13 +1,14 @@
 ﻿var home = new Vue({
     el: '#home',
     data: {
+        directions: ['North', 'South', 'East', 'West'],
         rover: {
             x: 0,
             y: 0,
-            dir: 'E',
+            dir: 'N',
             startX: 0,
             startY: 0,
-            startDir: 'E',
+            startDir: 'North',
         },
         grid: {
             maxDimension: 30,
@@ -22,10 +23,7 @@
     mounted: function () {
         // origin (0,0) is defined in the bottom left (not top left)
 
-        //TODO replace with updateRover()
-
-        this.rover.y = this.grid.height - 1;
-        this.rover.startY = 0;
+        this.updateRoverStart();
     },
 
     methods: {
@@ -46,7 +44,34 @@
             return false;
         },
 
-        updateRover: function () {
+        isNextCellLeft(x, y) {
+            if (this.rover.x - 1 === x
+                && this.rover.y === y
+                && this.rover.dir === 'W') {
+                return true;
+            }
+            return false;
+        },
+
+        isNextCellUp(x, y) {
+            if (this.rover.x === x
+                && this.rover.y - 1 === y
+                && this.rover.dir === 'N') {
+                return true;
+            }
+            return false;
+        },
+
+        isNextCellDown(x, y) {
+            if (this.rover.x === x
+                && this.rover.y + 1 === y
+                && this.rover.dir === 'S') {
+                return true;
+            }
+            return false;
+        },
+
+        updateRoverStart: function () {
             var startY = parseInt(this.rover.startY) || 0;
             var startX = parseInt(this.rover.startX) || 0;
             if (startY < 0) {
@@ -68,6 +93,7 @@
 
             this.rover.y = this.grid.height - startY - 1;
             this.rover.x = startX;
+            this.rover.dir = this.dirStrToChar(this.rover.startDir);
         },
 
         updateGridInput: function () {
@@ -94,7 +120,20 @@
             this.grid.widthPx = widthNum * this.grid.cellPx;
             this.grid.height = heightNum;
 
-            this.updateRover();
+            this.updateRoverStart();
+        },
+
+        dirStrToChar: function (dirStr) {
+            switch (dirStr) {
+                case 'North':
+                    return 'N'
+                case 'South':
+                    return 'S';
+                case 'East':
+                    return 'E';
+                case 'West':
+                    return 'W';
+            }
         },
 
         serverGetGrid: function serverGetGrid(width, height) {

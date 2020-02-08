@@ -6,8 +6,13 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 
 .rover {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
+}
+
+.rover .fa {
+    font-size: 15px;
+    margin-left: 2px;
 }
 
 .table-bordered td {
@@ -25,6 +30,10 @@ h1, h2, h3, h4 {
 hr {
     margin-top: 30px;
     margin-bottom: 30px;
+}
+
+select {
+    max-width: 100px;
 }
 
 input {
