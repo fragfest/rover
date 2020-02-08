@@ -35,8 +35,8 @@ namespace webSvc.App
         {
             var x = startPoint.X > 0 ? startPoint.X : 0;
             var y = startPoint.Y > 0 ? startPoint.Y : 0;
-            var startX = x < gridWidth ? x : gridWidth;
-            var startY = y < gridHeight ? y : gridHeight;
+            var startX = x < gridWidth ? x : gridWidth - 1;
+            var startY = y < gridHeight ? y : gridHeight - 1;
             var startDir = startPoint.Dir;
             PathArr.Add(
                 new PathPoint(startX, startY, startDir)
@@ -122,10 +122,10 @@ namespace webSvc.App
 
             var gridWidthOutOfBounds = false;
             var gridHeightOutOfBounds = false;
-            if (newX < 0 || newX > gridWidth) {
+            if (newX < 0 || newX > gridWidth - 1) {
                 gridWidthOutOfBounds = true;
             }
-            if(newY < 0 || newY > gridHeight) {
+            if(newY < 0 || newY > gridHeight - 1) {
                 gridHeightOutOfBounds = true;
             }
 

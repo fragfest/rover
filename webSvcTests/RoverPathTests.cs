@@ -23,15 +23,15 @@ namespace webSvcTests
             Assert.AreEqual(1, roverPath.GetNumPositions());
             Assert.AreEqual(8, roverPath.gridWidth);
             Assert.AreEqual(10, roverPath.gridHeight);
-            Assert.AreEqual(8, roverPath.GetPathPoint(0).X);
+            Assert.AreEqual(7, roverPath.GetPathPoint(0).X);
             Assert.AreEqual(2, roverPath.GetPathPoint(0).Y);
             Assert.AreEqual(PathDirection.North, roverPath.GetPathPoint(0).Dir);
 
-            startPoint = new PathPoint(20, 2, "S");
+            startPoint = new PathPoint(20, 11, "S");
             roverPath = new RoverPath(8, 10, startPoint);
             Assert.AreEqual(PathDirection.South, roverPath.GetPathPoint(0).Dir);
-            Assert.AreEqual(roverPath.GetPathPoint(0).X, 8);
-            Assert.AreEqual(roverPath.GetPathPoint(0).Y, 2);
+            Assert.AreEqual(roverPath.GetPathPoint(0).X, 7);
+            Assert.AreEqual(roverPath.GetPathPoint(0).Y, 9);
             Assert.AreEqual(roverPath.GetPathPoint(0).Dir, PathDirection.South);
         }
 
@@ -57,27 +57,41 @@ namespace webSvcTests
             Assert.AreEqual(PathDirection.West, roverPath.GetPathPoint(1).Dir);
 
             roverPath.createRoverPath("RRMMMMMMMMMMM");
-            Assert.AreEqual(12, roverPath.GetNumPositions());
-            Assert.AreEqual(10, roverPath.GetPathPoint(11).X);
-            Assert.AreEqual(1, roverPath.GetPathPoint(11).Y);
-            Assert.AreEqual(PathDirection.East, roverPath.GetPathPoint(11).Dir);
+            Assert.AreEqual(11, roverPath.GetNumPositions());
+            Assert.AreEqual(9, roverPath.GetPathPoint(10).X);
+            Assert.AreEqual(1, roverPath.GetPathPoint(10).Y);
+            Assert.AreEqual(PathDirection.East, roverPath.GetPathPoint(10).Dir);
         }
 
         [Test]
         public void createRoverPath_TestExamples()
         {
-            var startPoint = new PathPoint(1, 2, "N");
-            roverPath = new RoverPath(5, 5, startPoint);
-            roverPath.createRoverPath("LMLMLMLMM");
+            //RoverPath constructor uses plateau size not upper right coordinates
+            var upperRightX = 5;
+            var upperRightY = 5;
+
+            var startX = 1;
+            var startY = 2;
+            var startDir = "N";
+            var instructions = "LMLMLMLMM";
+
+            var startPoint = new PathPoint(startX, startY, startDir);
+            roverPath = new RoverPath(upperRightX + 1, upperRightY + 1, startPoint);
+            roverPath.createRoverPath(instructions);
             var numPositions = roverPath.GetNumPositions();
             Assert.AreEqual(1, roverPath.GetPathPoint(numPositions - 1).X);
             Assert.AreEqual(3, roverPath.GetPathPoint(numPositions - 1).Y);
             Assert.AreEqual(PathDirection.North, roverPath.GetPathPoint(numPositions - 1).Dir);
 
-            startPoint = new PathPoint(3, 3, "E");
-            roverPath = new RoverPath(5, 5, startPoint);
+            startX = 3;
+            startY = 3;
+            startDir = "E";
+            instructions = "MMRMMRMRRM";
 
-            roverPath.createRoverPath("MMRMMRMRRM");
+            startPoint = new PathPoint(startX, startY, startDir);
+            roverPath = new RoverPath(upperRightX + 1, upperRightY + 1, startPoint);
+
+            roverPath.createRoverPath(instructions);
             numPositions = roverPath.GetNumPositions();
             Assert.AreEqual(5, roverPath.GetPathPoint(numPositions - 1).X);
             Assert.AreEqual(1, roverPath.GetPathPoint(numPositions - 1).Y);
