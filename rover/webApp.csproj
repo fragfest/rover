@@ -10,7 +10,7 @@
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'rover' ">
     <StartAction>Project</StartAction>
-    <ApplicationURL>http://localhost:5000</ApplicationURL>
+    <ApplicationURL>http://localhost:5002</ApplicationURL>
     <LaunchBrowser></LaunchBrowser>
   </PropertyGroup>
 </Project>
