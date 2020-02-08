@@ -13,13 +13,20 @@ namespace webSvc.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RoverImagesController : ControllerBase
+    public class RoverPathController : ControllerBase
     {
-        private readonly ILogger<RoverImagesController> _logger;
+        private readonly ILogger<RoverPathController> _logger;
 
-        public RoverImagesController(ILogger<RoverImagesController> logger)
+        public RoverPathController(ILogger<RoverPathController> logger)
         {
             _logger = logger;
+        }
+
+        [HttpPost]
+        public String Post()
+        {
+            int[] test = { 1, 2, 3 };
+            return JsonSerializer.Serialize(test);
         }
 
         [HttpGet]
