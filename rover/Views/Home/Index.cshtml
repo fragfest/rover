@@ -8,73 +8,111 @@
 <div id="home" v-cloak>
 
     <h1>Mission Control</h1>
-    <p>Plan rover missions from here. When all rover paths have been created, launch the mission to Mars</p>
+    <p>Plan rover missions from here. When all rover paths have been prepared, launch the mission to Mars</p>
     <hr>
 
     <h3>Mars Destination</h3>
-    <p>Dimensions of the Mars destination plateau to investigate.</p>
+    <p>Dimensions of the Mars plateau to investigate.</p>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-3">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Width</span>
                 </div>
-                <input type="number" class="form-control" v-model="grid.widthInput" v-on:input="updateGridInput" min="0" v-bind:max="grid.maxDimension">
+                <input type="number" class="form-control" v-model="grid.widthInput" v-on:input="updateGridInput" min="0">
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-3">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Height</span>
                 </div>
-                <input type="number" class="form-control" v-model="grid.heightInput" v-on:input="updateGridInput" min="0" v-bind:max="grid.maxDimension">
+                <input type="number" class="form-control" v-model="grid.heightInput" v-on:input="updateGridInput" min="0">
             </div>
+        </div>
+        <div class="col-lg-6">
         </div>
     </div>
 
-    <!-- controls row START-->
+    <!-- #################################################################################################### -->
+    <!-- controls & grid row START-->
     <div class="row">
-
         <div class="col-lg-6">
+
             <h3>Rover Control</h3>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Starting coordinates</p>
+                    <p>Landing coordinates and orientation</p>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-3">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">x</span>
                         </div>
-                        <input type="number" class="form-control" v-model="rover.startX" v-on:input="updateRover" min="0">
+                        <input type="number" class="form-control" v-model="rover.startX" v-on:input="updateRoverStart" min="0">
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">y</span>
+                        </div>
+                        <input type="number" class="form-control" v-model="rover.startY" v-on:input="updateRoverStart" min="0">
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">y</span>
+                            <span class="input-group-text">Facing</span>
                         </div>
-                        <input type="number" class="form-control" v-model="rover.startY" v-on:input="updateRover" min="0">
+                        <select class="form-control" v-model="rover.startDir" v-bind:options="directions" v-on:change="updateRoverStart">
+                            <option v-for="dir in directions">
+                                {{dir}}
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Input instructions</p>
+                    <p>Movement instructions</p>
                 </div>
             </div>
-        </div>
+            <div class="row" style="padding-bottom: 20px">
+                <div class="col-lg-12" align="left">
+                    <button type="button" class="btn btn-outline-info" v-on:click="updateRoverPath('L')" v-bind:disabled="disableMovementButtons">
+                        <i class="fa fa-reply"></i>
+                        <small><br>Rotate</small>
+                    </button>
+                    <button type="button" class="btn btn-outline-info">
+                        &nbsp;<i class="fa fa-arrow-circle-o-up"></i>
+                        <small><br>Move</small>
+                    </button>
+                    <button type="button" class="btn btn-outline-info">
+                        <i class="fa fa-share"></i>
+                        <small><br>Rotate</small>
+                    </button>
+                </div>
+            </div>
 
+        </div>
+        <!-- #################################################################################################### -->
+        <!-- Grid -->
         <div class="col-lg-6">
             <h3>Rover Path</h3>
             <table class="grid-input table table-bordered" align="left" v-bind:style="{ width: grid.widthPx + 'px' }">
                 <tbody>
                     <tr v-for="(h, y) in grid.height">
-                        <td v-for="(w, x) in grid.width">
-                            <img v-show="isRoverCell(x, y)" src="https://visualpharm.com/assets/218/Small Robot-595b40b85ba036ed117dc489.svg" alt="R" class="rover" >
-                            <div v-show="!isRoverCell(x, y)" class="rover"></div>
+                        <td v-for="(w, x) in grid.width" v-bind:class="{ 'path': isRoverCell(x, y) }">
+                            <img v-show="isRoverCell(x, y)" src="~/images/robot.svg" alt="R" class="rover">
+                            <div v-show="!isRoverCell(x, y)" class="rover">
+                                <span v-bind:class="{ 'fa fa-chevron-right': isNextCellRight(x, y) }"></span>
+                                <span v-bind:class="{ 'fa fa-chevron-left': isNextCellLeft(x, y) }"></span>
+                                <span v-bind:class="{ 'fa fa-chevron-down': isNextCellDown(x, y) }"></span>
+                                <span v-bind:class="{ 'fa fa-chevron-up': isNextCellUp(x, y) }"></span>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -82,7 +120,7 @@
         </div>
 
     </div>
-    <!-- controls row END-->
-
+    <!-- controls & grid row END-->
+    <!-- #################################################################################################### -->
 
 </div>

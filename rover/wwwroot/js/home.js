@@ -1,11 +1,13 @@
 ﻿var home = new Vue({
     el: '#home',
     data: {
+        disableMovementButtons: false,
         directions: ['North', 'South', 'East', 'West'],
         rover: {
             x: 0,
             y: 0,
             dir: 'N',
+            input: "",
             startX: 0,
             startY: 0,
             startDir: 'North',
@@ -27,6 +29,45 @@
     },
 
     methods: {
+
+        /////////////////////////////////////////////////////////////////////
+        // Build Path, input recording
+        /////////////////////////////////////////////////////////////////////
+
+        updateRoverPath: function (newChar) {
+            var ref = this;
+            ref.disableMovementButtons = true;
+
+            $.ajax({
+                url: 'https://localhost:5003/roverimages',
+                data: JSON.stringify({
+                    test: 'test'
+                }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                type: 'POST',
+                success: function (data, status, xhr) {
+
+                    console.log('SUCCESS')
+                    ref.rover.input += newChar;
+                    ref.disableMovementButtons = false;
+
+                },
+                error: function (xhr) {
+                    ref.disableMovementButtons = false;
+                    //TODO display error to user
+                    console.error('updateRoverPath status ' + xhr.status + ': ' + xhr.responseText);
+                }
+            });
+        },
+
+        resetRecording: function() {
+            this.rover.input = "";
+        },
+
+        /////////////////////////////////////////////////////////////////////
+        // Build Grid
+        /////////////////////////////////////////////////////////////////////
 
         isRoverCell: function (x, y) {
             if (this.rover.x === x && this.rover.y === y) {
@@ -71,6 +112,10 @@
             return false;
         },
 
+        /////////////////////////////////////////////////////////////////////
+        // Input
+        /////////////////////////////////////////////////////////////////////
+
         updateRoverStart: function () {
             var startY = parseInt(this.rover.startY) || 0;
             var startX = parseInt(this.rover.startX) || 0;
@@ -94,6 +139,7 @@
             this.rover.y = this.grid.height - startY - 1;
             this.rover.x = startX;
             this.rover.dir = this.dirStrToChar(this.rover.startDir);
+            this.resetRecording();
         },
 
         updateGridInput: function () {
@@ -135,6 +181,10 @@
                     return 'W';
             }
         },
+
+        /////////////////////////////////////////////////////////////////////
+        // Send mission, get screenshot
+        /////////////////////////////////////////////////////////////////////
 
         serverGetGrid: function serverGetGrid(width, height) {
             $.ajax({

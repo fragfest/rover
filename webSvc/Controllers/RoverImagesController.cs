@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Drawing.Imaging;
+using System.Text.Json;
 
 namespace webSvc.Controllers
 {
@@ -19,6 +20,13 @@ namespace webSvc.Controllers
         public RoverImagesController(ILogger<RoverImagesController> logger)
         {
             _logger = logger;
+        }
+
+        [HttpPost]
+        public String Post()
+        {
+            int[] test = { 1, 2, 3 };
+            return JsonSerializer.Serialize(test);
         }
 
         [HttpGet]

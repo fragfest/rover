@@ -5,13 +5,29 @@ for details on configuring this project to bundle and minify static web assets. 
     display: none
 }
 
+.fa-spinner {
+    font-size: 20px;
+    color: #17a2b8;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+button .fa {
+    font-size: 30px;
+}
+
+.path {
+    background-color: #93f0ff;
+}
+
 .rover {
     width: 22px;
     height: 22px;
 }
 
 .rover .fa {
-    font-size: 15px;
+    color: #17a2b8;
+    font-size: 20px;
     margin-left: 2px;
 }
 
@@ -34,6 +50,10 @@ hr {
 
 select {
     max-width: 100px;
+}
+
+.recordings {
+    max-width: none;
 }
 
 input {
