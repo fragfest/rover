@@ -26,56 +26,70 @@ namespace webSvc.Controllers
         [HttpPost]
         public IActionResult Post(MissionReq pathReq)
         {
-            var input = pathReq.rovers[0].input ?? "";
-            var startX = pathReq.rovers[0].startX;
-            var startY = pathReq.rovers[0].startY;
-            var startDir = pathReq.rovers[0].startDir ?? "";
             var gridWidth = pathReq.gridWidth;
             var gridHeight = pathReq.gridHeight;
 
-            var startPoint = new PathPoint(startX, startY, startDir);
-            var roverPath = new RoverPath(gridWidth, gridHeight, startPoint);
-            roverPath.createRoverPath(input);
-            var pathCount = roverPath.GetNumPositions();
-
-            var path = new List<ResPoint>();
-            for (var i = 0; i < pathCount; i++)
+            var lastPoints = new List<MissionResPoint>();
+            foreach (var rover in pathReq.rovers)
             {
-                var pathPoint = roverPath.GetPathPoint(i);
-                var point = new ResPoint();
-                point.x = pathPoint.X;
-                point.y = pathPoint.Y;
-                point.dir = pathPoint.Dir.ToString();
-                path.Add(point);
+                var startPoint = new PathPoint(rover.startX, rover.startY, rover.startDirChar);
+                var roverPath = new RoverPath(gridWidth, gridHeight, startPoint);
+                roverPath.createRoverPath(rover.input);
+                var lastIndex = roverPath.GetNumPositions() - 1;
+                var firstPoint = roverPath.GetPathPoint(0);
+                var lastPoint = roverPath.GetPathPoint(lastIndex);
+
+                var resPoint = new MissionResPoint();
+                resPoint.firstX = firstPoint.X;
+                resPoint.firstY = firstPoint.Y;
+                resPoint.firstDir = firstPoint.Dir.ToString();
+                resPoint.lastX = lastPoint.X;
+                resPoint.lastY = lastPoint.Y;
+                resPoint.lastDir = lastPoint.Dir.ToString();
+                resPoint.input = rover.input;
+                lastPoints.Add(resPoint);
             }
 
             var res = new MissionRes();
-            res.lastPoint = path[path.Count - 1];
-            res.input = input;
+            res.gridWidth = gridWidth;
+            res.gridHeight = gridHeight;
+            res.rovers = lastPoints;
             return Ok(res);
         }
 
     }
 
+    public class MissionResPoint
+    {
+        public int firstX { get; set; }
+        public int firstY { get; set; }
+        public string firstDir { get; set; }
+        public int lastX { get; set; }
+        public int lastY { get; set; }
+        public string lastDir { get; set; }
+        public string input { get; set; }
+    }
+
     public class MissionRes
     {
-        public string input { get; set; }
-        public ResPoint lastPoint { get; set; }
+        public int gridWidth { get; set; }
+        public int gridHeight { get; set; }
+        public List<MissionResPoint> rovers { get; set; }
     }
 
     public class MissionReq
     {
         public int gridWidth { get; set; }
         public int gridHeight { get; set; }
-        public List<MissionRover> rovers { get; set; }
+        public List<MissionReqRover> rovers { get; set; }
     }
 
-    public class MissionRover
+    public class MissionReqRover
     {
         public string input { get; set; }
         public int startX { get; set; }
         public int startY { get; set; }
-        public string startDir { get; set; }
+        public string startDirChar { get; set; }
     }
 
 }

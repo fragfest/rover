@@ -6,6 +6,7 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 
 .screenshot {
+    margin-top: 10px;
     max-width: 300px;
 }
 

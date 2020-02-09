@@ -38,6 +38,7 @@
             heightInput: 6,
         },
 
+        reports: [],
         isMissionInProgress: false,
         errorMsgMission: '',
         disableMissionButton: false,
@@ -84,7 +85,7 @@
                 path: this.rover.path,
                 startX: parseInt(this.rover.startX) || 0,
                 startY: parseInt(this.rover.startY) || 0,
-                startDir: this.rover.startDir || '',
+                startDirChar: this.dirStrToChar(this.rover.startDir || ''),
             };
             this.rovers.push(newRover);
 
@@ -308,6 +309,13 @@
             return this.disableMovementButtons || this.disableMissionButton || !this.rovers.length;
         },
 
+        createReport: function (missionRes) {
+            var gridWidth = missionRes.gridWidth || 0;
+            var gridHeight = missionRes.gridHeight || 0;
+            var rovers = missionRes.rovers || [];
+            this.reports = rovers;
+        },
+
         launchMission: function () {
             this.createMissionServer()
                 .then(this.getScreenshotServer);
@@ -341,6 +349,7 @@
 
                         ref.isMissionInProgress = false;
                         ref.showMissionResult = true;
+                        ref.createReport(data);
 
                         resolve();
                     },
