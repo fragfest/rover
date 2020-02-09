@@ -50,24 +50,31 @@
                 });
             });
             var last = path[path.length - 1];
-            this.updateRover(last.x, last.y);
+            this.updateRover(last.x, last.y, last.dir);
         },
 
         updateRoverPath: function (newChar) {
+            //TODO validate newChar
+
             var ref = this;
             ref.disableMovementButtons = true;
-            var roverInput = ref.rover.input + newChar;
-            //TODO validate newChar
+            var dirStrToChar = ref.dirStrToChar;
+
+            var roverInput = (ref.rover.input || '') + newChar;
+            var startX = parseInt(ref.rover.startX) || 0;
+            var startY = parseInt(ref.rover.startY) || 0;
+            var gridWidth = parseInt(ref.grid.width) || 0;
+            var gridHeight = parseInt(ref.grid.height) || 0;
 
             $.ajax({
                 url: ref.urlWebSvcRoverPath,
                 data: JSON.stringify({
                     input: roverInput,
-                    startX: ref.rover.startX,
-                    startY: ref.rover.startY,
-                    startDir: ref.dirStrToChar(ref.rover.startDir),
-                    gridWidth: ref.grid.width,
-                    gridHeight: ref.grid.height
+                    startX: startX,
+                    startY: startY,
+                    startDir: dirStrToChar(ref.rover.startDir),
+                    gridWidth: gridWidth,
+                    gridHeight: gridHeight
                 }),
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
@@ -75,7 +82,7 @@
                 success: function (data, status, xhr) {
 
                     ref.disableMovementButtons = false;
-                    ref.rover.input = data.input;
+                    ref.rover.input = data.input || '';
                     ref.buildPathFromServer(data.path || []);
 
                 },
@@ -144,9 +151,11 @@
         // Update
         /////////////////////////////////////////////////////////////////////
 
-        updateRover: function (x, y) {
+    //TODO func needed?
+        updateRover: function (x, y, dir) {
             this.rover.x = x;
             this.rover.y = y;
+            this.rover.dir = dir;
         },
 
         updateRoverStart: function () {
@@ -199,6 +208,8 @@
             this.grid.widthPx = widthNum * this.grid.cellPx;
             this.grid.height = heightNum;
 
+            this.rover.startX = 0;
+            this.rover.startY = 0;
             this.updateRoverStart();
         },
 
@@ -212,6 +223,8 @@
                     return 'E';
                 case 'West':
                     return 'W';
+                default:
+                    return 'N';
             }
         },
 

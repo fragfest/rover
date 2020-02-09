@@ -67,6 +67,7 @@ namespace webSvcTests
         public void createRoverPath_TestExamples()
         {
             //RoverPath constructor uses plateau size not upper right coordinates
+            //plateau size is 1 unit bigger
             var upperRightX = 5;
             var upperRightY = 5;
 

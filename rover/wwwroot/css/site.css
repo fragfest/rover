@@ -53,6 +53,8 @@ select {
 
 .recordings {
     max-width: none;
+    resize: none;
+    height: 60px;
 }
 
 input {

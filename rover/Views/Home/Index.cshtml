@@ -12,7 +12,8 @@
     <hr>
 
     <h3>Mars Destination</h3>
-    <p>Dimensions of the Mars plateau to investigate.</p>
+    <p style="margin-bottom: 0">Dimensions of the Mars plateau to investigate.</p>
+    <p class="text-muted"><small>i.e. upper y-coordinate of 5 means a height of 6</small></p>
     <div class="row">
         <div class="col-lg-3">
             <div class="input-group mb-3">
@@ -103,7 +104,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">Recorded movements</span>
                         </div>
-                        <input type="text" class="form-control recordings" v-model="rover.input" disabled>
+                        <textarea rows="1" class="recordings" v-model="rover.input" disabled></textarea>
                     </div>
                 </div>
             </div>
