@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using webSvc.App;
+using webSvc.Controllers;
 
 namespace webSvc
 {
@@ -13,44 +15,90 @@ namespace webSvc
             //TODO missionId
         }
 
-        public Bitmap getScreenshot(RoverPath roverPath)
+        public Bitmap getScreenshot(int gridWidth, int gridHeight, List<MissionResPoint> rovers)
         {
+            var roverPaths = new List<RoverPath>();
+            foreach (var rover in rovers) {
+                var startPoint = new PathPoint(rover.firstX, rover.firstY, dirStrToChar(rover.firstDir));
+                var roverPath = new RoverPath(gridWidth, gridHeight, startPoint);
+                roverPath.createRoverPath(rover.input);
+                roverPaths.Add(roverPath);
+            }
+            //TODO roverPaths.count == 0 exit
+
             using (var fileStream = File.OpenRead(marsGridImage))
             {
                 var bmp = new Bitmap(fileStream);
-                var gridWidthPx = roverPath.gridWidthPx;
-                var gridHeightPx = roverPath.gridHeightPx;
+                var gridWidthPx = roverPaths[0].gridWidthPx;
+                var gridHeightPx = roverPaths[0].gridHeightPx;
 
                 var bmpOut = new Bitmap(bmp, new Size(gridWidthPx, gridHeightPx));
-                createRoverPathBmp(bmpOut, roverPath);
+                CreateRoverPathBmp(bmpOut, roverPaths);
                 return bmpOut;
             }
         }
 
-        private void createRoverPathBmp(Bitmap bmp, RoverPath roverPath)
+        private string dirStrToChar(string dirStr)
         {
-            var cellSizePx = roverPath.cellSizePx;
-            var gridHeight = roverPath.gridHeight;
-            var gridWidthPx = roverPath.gridWidthPx;
-            var gridHeightPx = roverPath.gridHeightPx;
-            var roverPathCount = roverPath.GetNumPositions();
+            switch (dirStr)
+            {
+                case "North":
+                    return "N";
+                case "South":
+                    return "S";
+                case "East":
+                    return "E";
+                case "West":
+                    return "W";
+                default:
+                    return "N";
+            }
+        }
+
+        //public Bitmap getScreenshot(RoverPath roverPath)
+        //{
+        //    using (var fileStream = File.OpenRead(marsGridImage))
+        //    {
+        //        var bmp = new Bitmap(fileStream);
+        //        var gridWidthPx = roverPath.gridWidthPx;
+        //        var gridHeightPx = roverPath.gridHeightPx;
+
+        //        var bmpOut = new Bitmap(bmp, new Size(gridWidthPx, gridHeightPx));
+        //        createRoverPathBmp(bmpOut, roverPath);
+        //        return bmpOut;
+        //    }
+        //}
+
+        private void CreateRoverPathBmp(Bitmap bmp, List<RoverPath> roverPaths)
+        {
+            var cellSizePx = roverPaths[0].cellSizePx;
+            var gridHeight = roverPaths[0].gridHeight;
+            var gridWidthPx = roverPaths[0].gridWidthPx;
+            var gridHeightPx = roverPaths[0].gridHeightPx;
 
             for (var x = 0; x < gridWidthPx; x++)
             {
                 for (var y = 0; y < gridHeightPx; y++)
                 {
                     var roverPathPointFound = false;
-                    for (var p = 0; p < roverPathCount; p++)
+
+                    for (var r = 0; r < roverPaths.Count; r++)
                     {
-                        var xIndex = getCellIndex(x, cellSizePx);
-                        var yIndex = getCellIndex(y, cellSizePx);
-                        var xRoverPath = roverPath.GetPathPoint(p).X;
-                        var yRoverPath = ConvertRoverPathToBmpYaxis(roverPath.GetPathPoint(p).Y, gridHeight);
-                        if (xIndex == xRoverPath && yIndex == yRoverPath)
+                        var roverPathCount = roverPaths[r].GetNumPositions();
+
+                        for (var p = 0; p < roverPathCount; p++)
                         {
-                            roverPathPointFound = true;
+                            var xIndex = getCellIndex(x, cellSizePx);
+                            var yIndex = getCellIndex(y, cellSizePx);
+                            var xRoverPath = roverPaths[r].GetPathPoint(p).X;
+                            var yRoverPath = ConvertRoverPathToBmpYaxis(roverPaths[r].GetPathPoint(p).Y, gridHeight);
+                            if (xIndex == xRoverPath && yIndex == 5)
+                            {
+                                roverPathPointFound = true;
+                            }
                         }
                     }
+
                     if (!roverPathPointFound)
                     {
                         bmp.SetPixel(x, y, Color.Black);
@@ -61,7 +109,8 @@ namespace webSvc
 
         private int ConvertRoverPathToBmpYaxis(int yIndexRover, int roverGridHeight)
         {
-            return roverGridHeight - 1 - yIndexRover;
+            //return roverGridHeight - 1 - yIndexRover;
+            return yIndexRover;
         }
 
         private int getCellIndex(int pixelIndex, int cellSizePx)

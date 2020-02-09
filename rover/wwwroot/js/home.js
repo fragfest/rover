@@ -289,7 +289,7 @@
         dirStrToChar: function (dirStr) {
             switch (dirStr) {
                 case 'North':
-                    return 'N'
+                    return 'N';
                 case 'South':
                     return 'S';
                 case 'East':

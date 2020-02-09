@@ -9,6 +9,7 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Text;
 using webSvc.App;
+using Newtonsoft.Json;
 
 namespace webSvc.Controllers
 {
@@ -28,15 +29,15 @@ namespace webSvc.Controllers
         {
             var gridWidth = pathReq.gridWidth;
             var gridHeight = pathReq.gridHeight;
-
             var lastPoints = new List<MissionResPoint>();
+
             foreach (var rover in pathReq.rovers)
             {
                 var startPoint = new PathPoint(rover.startX, rover.startY, rover.startDirChar);
                 var roverPath = new RoverPath(gridWidth, gridHeight, startPoint);
                 roverPath.createRoverPath(rover.input);
-                var lastIndex = roverPath.GetNumPositions() - 1;
                 var firstPoint = roverPath.GetPathPoint(0);
+                var lastIndex = roverPath.GetNumPositions() - 1;
                 var lastPoint = roverPath.GetPathPoint(lastIndex);
 
                 var resPoint = new MissionResPoint();
@@ -54,6 +55,10 @@ namespace webSvc.Controllers
             res.gridWidth = gridWidth;
             res.gridHeight = gridHeight;
             res.rovers = lastPoints;
+
+            string resJson = JsonConvert.SerializeObject(res);
+            System.IO.File.WriteAllText("mission.json", resJson);
+
             return Ok(res);
         }
 

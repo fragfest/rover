@@ -9,6 +9,7 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Text;
 using webSvc.App;
+using Newtonsoft.Json;
 
 namespace webSvc.Controllers
 {
@@ -29,12 +30,15 @@ namespace webSvc.Controllers
             var inputInstructions = input ?? "";
             var direction = startDir ?? "";
 
-            var roverImages = new RoverImages("1");
-            var startPoint = new PathPoint(startX, startY, direction);
-            var roverPath = new RoverPath(gridWidth, gridHeight, startPoint);
-            roverPath.createRoverPath(inputInstructions);
+            var json = System.IO.File.ReadAllText("mission.json");
+            var missionRes = JsonConvert.DeserializeObject<MissionRes>(json);
 
-            var bitmap = roverImages.getScreenshot(roverPath);
+            var roverImages = new RoverImages("1");
+            //var startPoint = new PathPoint(startX, startY, direction);
+            //var roverPath = new RoverPath(gridWidth, gridHeight, startPoint);
+            //roverPath.createRoverPath(inputInstructions);
+
+            var bitmap = roverImages.getScreenshot(missionRes.gridWidth, missionRes.gridHeight, missionRes.rovers);
             using (var outStream = new MemoryStream())
             {
                 bitmap.Save(outStream, ImageFormat.Png);
