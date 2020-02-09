@@ -37,7 +37,11 @@
             heightInput: 6,
         },
 
-        screenshot:'',
+        isMissionInProgress: false,
+        errorMsgMission: '',
+        disableMissionButton: false,
+        showMissionResult: false,
+        screenshot: '',
     },
 
     mounted: function () {
@@ -299,6 +303,10 @@
         // Send mission, get screenshot
         /////////////////////////////////////////////////////////////////////
 
+        isDisabledMission: function () {
+            return this.disableMovementButtons || this.disableMissionButton || !this.rovers.length;
+        },
+
         launchMission: function () {
             //TODO spinner and disable launch button waiting for server
             this.serverGetScreenshot()
@@ -307,6 +315,9 @@
         serverGetScreenshot: function() {
             var ref = this;
             var dirStrToChar = ref.dirStrToChar;
+            ref.disableMissionButton = true;
+            ref.isMissionInProgress = true;
+            ref.errorMsgMission = '';
 
             var roverInput = ref.rover.input || '';
             var startX = parseInt(ref.rover.startX) || 0;
@@ -327,9 +338,14 @@
                 },
                 type: 'GET',
                 success: function (data, status, xhr) {
+                    ref.isMissionInProgress = false;
+                    ref.showMissionResult = true;
                     ref.screenshot = 'data:image/png;base64, ' + data;
                 },
                 error: function (xhr) {
+                    ref.isMissionInProgress = false;
+                    ref.disableMissionButton = false;
+                    ref.errorMsgMission = 'An error occurred';
                     console.error('serverGetScreenshot status ' + xhr.status + ': ' + xhr.responseText);
                 }
             });

@@ -130,7 +130,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12" align="left" style="margin-bottom: 20px">
-                        <button type="button" class="btn btn-outline-primary" v-on:click="saveRover">
+                        <button type="button" class="btn btn-outline-primary" v-on:click="saveRover" v-bind:disabled="disableMovementButtons">
                             <p>Save Rover</p>
                         </button>
                     </div>
@@ -167,16 +167,33 @@
 
     <div class="row">
         <div class="col-lg-6">
-            <button type="button" class="btn btn-outline-info" v-on:click="launchMission" v-bind:disabled="disableMovementButtons">
+            <button type="button" class="btn btn-outline-info" v-on:click="launchMission" v-bind:disabled="isDisabledMission()">
                 <h4>Launch Mission</h4>
             </button>
         </div>
         <div class="col-lg-6">
+            <i class="fa fa-spinner fa-spin" v-show="isMissionInProgress"></i>
+            <p class="error" v-show="errorMsgMission">{{errorMsgMission}}</p>
         </div>
     </div>
     <hr>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-6" v-show="showMissionResult">
+            <h4>Mission Report</h4>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p><strong>Rover 1</strong><br></p>
+                    <p>Input<br></p>
+                    <p>Output<br></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p><strong>Rover 2</strong><br></p>
+                    <p>Input<br></p>
+                    <p>Output<br></p>
+                </div>
+            </div>
         </div>
         <div class="col-lg-6">
             <img v-bind:src="screenshot">
