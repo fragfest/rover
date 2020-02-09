@@ -13,4 +13,7 @@
     <ApplicationURL>http://localhost:5000</ApplicationURL>
     <LaunchBrowser></LaunchBrowser>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Views\History\" />
+  </ItemGroup>
 </Project>

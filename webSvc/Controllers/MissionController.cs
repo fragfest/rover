@@ -24,6 +24,14 @@ namespace webSvc.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var json = System.IO.File.ReadAllText("mission.json");
+            var missionRes = JsonConvert.DeserializeObject<MissionRes>(json);
+            return Ok(missionRes);
+        }
+
         [HttpPost]
         public IActionResult Post(MissionReq pathReq)
         {

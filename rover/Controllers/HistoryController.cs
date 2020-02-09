@@ -9,11 +9,11 @@ using rover.Models;
 
 namespace rover.Controllers
 {
-    public class HistoryController : Controller
+    public class HomeController : Controller
     {
-        private readonly ILogger<HistoryController> _logger;
+        private readonly ILogger<HomeController> _logger;
 
-        public HistoryController(ILogger<HistoryController> logger)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }

@@ -1,7 +1,7 @@
 ﻿var home = new Vue({
     el: '#home',
     data: {
-        //TODO get urls from server using first page load. on server ideally in a config file
+        //TODO get urls from server using first page load. ideally from a config file
         urlWebSvcRoverPath: 'https://localhost:5003/roverpath',
         urlWebSvcRoverImage: 'https://localhost:5003/roverimages',
         urlWebSvcMission: 'https://localhost:5003/mission',
@@ -234,7 +234,6 @@
             var gridXmaxIndex = this.grid.width ? (this.grid.width - 1) : 0;
 
             if (startY <= 0) {
-                this.rover.startY = 0;
                 startY = 0;
             }
             if (startY > gridYmaxIndex) {
@@ -242,7 +241,6 @@
                 startY = gridYmaxIndex;
             }
             if (startX <= 0) {
-                this.rover.startX = 0;
                 startX = 0;
             }
             if (startX > gridXmaxIndex) {
@@ -375,17 +373,9 @@
 
             return new Promise( function(resolve, reject) {
 
-                var dirStrToChar = ref.dirStrToChar;
                 ref.disableMissionButton = true;
                 ref.isMissionInProgress = true;
                 ref.errorMsgMission = '';
-
-                var roverInput = ref.rover.input || '';
-                var startX = parseInt(ref.rover.startX) || 0;
-                var startY = parseInt(ref.rover.startY) || 0;
-                var startDir = ref.rover.startDir || '';
-                var gridWidth = parseInt(ref.grid.width) || 0;
-                var gridHeight = parseInt(ref.grid.height) || 0;
 
                 $.ajax({
                     url: ref.urlWebSvcRoverImage,
