@@ -1,15 +1,14 @@
 ﻿var home = new Vue({
     el: '#home',
     data: {
-        //TODO get urls from server using page first page load. on server ideally in a config file
+        //TODO get urls from server using first page load. on server ideally in a config file
         urlWebSvcRoverPath: 'https://localhost:5003/roverpath',
         urlWebSvcRoverImage: 'https://localhost:5003/roverimages',
         urlWebSvcMission: 'https://localhost:5003/mission',
 
         disableMovementButtons: false,
         directions: ['North', 'South', 'East', 'West'],
-        //TODO rename errorMsg
-        errorMsg: '',
+        errorMsgMovement: '',
 
         showNewRover: false,
         rovers: [],
@@ -120,7 +119,7 @@
         updateRoverPath: function (newChar) {
             var ref = this;
             ref.disableMovementButtons = true;
-            ref.errorMsg = '';
+            ref.errorMsgMovement = '';
             var dirStrToChar = ref.dirStrToChar;
 
             var roverInput = (ref.rover.input || '') + newChar;
@@ -154,7 +153,7 @@
 
                     ref.disableMovementButtons = false;
                     console.error('updateRoverPath status ' + xhr.status + ': ' + xhr.responseText);
-                    ref.errorMsg = 'An error occurred';
+                    ref.errorMsgMovement = 'An error occurred';
 
                 }
             });
