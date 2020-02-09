@@ -9,11 +9,14 @@
         directions: ['North', 'South', 'East', 'West'],
         errorMsg: '',
 
+        showNewRover: false,
+        rovers: [],
+
         rover: {
             x: 0,
             y: 0,
             dir: 'N',
-            input: "",
+            input: '',
             path: [],
 
             /* INPUTS which need cast */
@@ -21,6 +24,7 @@
             startY: 0,
             startDir: 'North',
         },
+
         grid: {
             maxDimension: 30,
             cellPx: 30,
@@ -43,6 +47,44 @@
     },
 
     methods: {
+
+        /////////////////////////////////////////////////////////////////////
+        // Add, Save rover
+        /////////////////////////////////////////////////////////////////////
+        isDisabledDimensions: function () {
+            return this.rovers.length > 0 || this.showNewRover;
+        },
+
+        addRover: function () {
+            var gridYmaxIndex = this.grid.height ? (this.grid.height - 1) : 0;
+
+            this.rover.x = 0;
+            this.rover.y = gridYmaxIndex;
+            this.rover.dir = 'N';
+            this.rover.input = '';
+            this.rover.path = [];
+            this.rover.startX = 0;
+            this.rover.startY = 0;
+            this.rover.startDir = 'North';
+
+            this.showNewRover = true;
+        },
+
+        saveRover: function () {
+            var newRover = {
+                x: this.rover.x,
+                y: this.rover.y,
+                dir: this.rover.dir,
+                input: this.rover.input,
+                path: this.rover.path,
+                startX: parseInt(this.rover.startX) || 0,
+                startY: parseInt(this.rover.startY) || 0,
+                startDir: this.rover.startDir || '',
+            };
+            this.rovers.push(newRover);
+
+            this.showNewRover = false;
+        },
 
         /////////////////////////////////////////////////////////////////////
         // Build Path, input recording

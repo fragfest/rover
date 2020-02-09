@@ -20,7 +20,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">Width</span>
                 </div>
-                <input type="number" class="form-control" v-model="grid.widthInput" v-on:input="updateGridInput" min="0">
+                <input type="number" class="form-control" v-model="grid.widthInput" v-on:input="updateGridInput" min="0" v-bind:disabled="isDisabledDimensions()">
             </div>
         </div>
         <div class="col-lg-3">
@@ -28,7 +28,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">Height</span>
                 </div>
-                <input type="number" class="form-control" v-model="grid.heightInput" v-on:input="updateGridInput" min="0">
+                <input type="number" class="form-control" v-model="grid.heightInput" v-on:input="updateGridInput" min="0" v-bind:disabled="isDisabledDimensions()">
             </div>
         </div>
         <div class="col-lg-6">
@@ -40,78 +40,104 @@
     <div class="row">
         <div class="col-lg-6">
 
-            <h3>Rover Control</h3>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Landing coordinates and orientation</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">x</span>
-                        </div>
-                        <input type="number" class="form-control" v-model="rover.startX" v-on:input="updateRoverStart" min="0">
+            <!-- !showNewRover -->
+            <div v-show="!showNewRover">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-outline-primary" v-on:click="addRover">
+                            <p>Add Rover</p>
+                        </button>
                     </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">y</span>
-                        </div>
-                        <input type="number" class="form-control" v-model="rover.startY" v-on:input="updateRoverStart" min="0">
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Facing</span>
-                        </div>
-                        <select class="form-control" v-model="rover.startDir" v-bind:options="directions" v-on:change="updateRoverStart">
-                            <option v-for="dir in directions">
-                                {{dir}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Movement instructions</p>
-                </div>
-            </div>
-            <div class="row" style="padding-bottom: 20px">
-                <div class="col-lg-6" align="left">
-                    <button type="button" class="btn btn-outline-info" v-on:click="updateRoverPath('L')" v-bind:disabled="disableMovementButtons">
-                        <i class="fa fa-reply"></i>
-                        <small><br>Rotate</small>
-                    </button>
-                    <button type="button" class="btn btn-outline-info" v-on:click="updateRoverPath('M')" v-bind:disabled="disableMovementButtons">
-                        &nbsp;<i class="fa fa-arrow-circle-o-up"></i>
-                        <small><br>Move</small>
-                    </button>
-                    <button type="button" class="btn btn-outline-info" v-on:click="updateRoverPath('R')" v-bind:disabled="disableMovementButtons">
-                        <i class="fa fa-share"></i>
-                        <small><br>Rotate</small>
-                    </button>
-                </div>
-                <div class="col-lg-6" align="left">
-                    <i class="fa fa-spinner fa-spin" v-show="disableMovementButtons"></i>
-                    <p class="error" v-show="errorMsg">{{errorMsg}}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12" align="left">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Recorded movements</span>
-                        </div>
-                        <textarea rows="1" class="recordings" v-model="rover.input" disabled></textarea>
+                    <div class="col-lg-6">
+                        <p style="margin: 10px">Rover count: {{rovers.length}}</p>
                     </div>
                 </div>
             </div>
 
+            <!-- showNewRover -->
+            <div v-show="showNewRover">
+
+                <h3>Rover Control</h3>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>Landing coordinates and orientation</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">x</span>
+                            </div>
+                            <input type="number" class="form-control" v-model="rover.startX" v-on:input="updateRoverStart" min="0">
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">y</span>
+                            </div>
+                            <input type="number" class="form-control" v-model="rover.startY" v-on:input="updateRoverStart" min="0">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Facing</span>
+                            </div>
+                            <select class="form-control" v-model="rover.startDir" v-bind:options="directions" v-on:change="updateRoverStart">
+                                <option v-for="dir in directions">
+                                    {{dir}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>Movement instructions</p>
+                    </div>
+                </div>
+                <div class="row" style="padding-bottom: 20px">
+                    <div class="col-lg-6" align="left">
+                        <button type="button" class="btn btn-outline-info" v-on:click="updateRoverPath('L')" v-bind:disabled="disableMovementButtons">
+                            <i class="fa fa-reply"></i>
+                            <small><br>Rotate</small>
+                        </button>
+                        <button type="button" class="btn btn-outline-info" v-on:click="updateRoverPath('M')" v-bind:disabled="disableMovementButtons">
+                            &nbsp;<i class="fa fa-arrow-circle-o-up"></i>
+                            <small><br>Move</small>
+                        </button>
+                        <button type="button" class="btn btn-outline-info" v-on:click="updateRoverPath('R')" v-bind:disabled="disableMovementButtons">
+                            <i class="fa fa-share"></i>
+                            <small><br>Rotate</small>
+                        </button>
+                    </div>
+                    <div class="col-lg-6" align="left">
+                        <i class="fa fa-spinner fa-spin" v-show="disableMovementButtons"></i>
+                        <p class="error" v-show="errorMsg">{{errorMsg}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12" align="left">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Recorded movements</span>
+                            </div>
+                            <textarea rows="1" class="recordings" v-model="rover.input" disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12" align="left" style="margin-bottom: 20px">
+                        <button type="button" class="btn btn-outline-primary" v-on:click="saveRover">
+                            <p>Save Rover</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- showNewRover -->
+            </div>
         </div>
 
         <!-- Grid -->
