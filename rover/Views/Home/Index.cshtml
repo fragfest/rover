@@ -82,7 +82,7 @@
                 </div>
             </div>
             <div class="row" style="padding-bottom: 20px">
-                <div class="col-lg-12" align="left">
+                <div class="col-lg-6" align="left">
                     <button type="button" class="btn btn-outline-info" v-on:click="updateRoverPath('L')" v-bind:disabled="disableMovementButtons">
                         <i class="fa fa-reply"></i>
                         <small><br>Rotate</small>
@@ -95,7 +95,10 @@
                         <i class="fa fa-share"></i>
                         <small><br>Rotate</small>
                     </button>
+                </div>
+                <div class="col-lg-6" align="left">
                     <i class="fa fa-spinner fa-spin" v-show="disableMovementButtons"></i>
+                    <p class="error" v-show="errorMsg">{{errorMsg}}</p>
                 </div>
             </div>
             <div class="row">

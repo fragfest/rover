@@ -6,25 +6,30 @@
 
         disableMovementButtons: false,
         directions: ['North', 'South', 'East', 'West'],
+        errorMsg: '',
+
         rover: {
             x: 0,
             y: 0,
             dir: 'N',
             input: "",
-            //TODO inidicate that start* values need sanitizing
+            path: [],
+
+            /* INPUTS which need cast */
             startX: 0,
             startY: 0,
             startDir: 'North',
-            path: [],
         },
         grid: {
             maxDimension: 30,
             cellPx: 30,
-            widthInput: 6,
-            heightInput: 6,
             widthPx: 0,
             width: 6,
             height: 6,
+
+            /* INPUTS which need cast */
+            widthInput: 6,
+            heightInput: 6,
         }
     },
     mounted: function () {
@@ -60,10 +65,9 @@
         },
 
         updateRoverPath: function (newChar) {
-            //TODO validate newChar
-
             var ref = this;
             ref.disableMovementButtons = true;
+            ref.errorMsg = '';
             var dirStrToChar = ref.dirStrToChar;
 
             var roverInput = (ref.rover.input || '') + newChar;
@@ -96,7 +100,7 @@
 
                     ref.disableMovementButtons = false;
                     console.error('updateRoverPath status ' + xhr.status + ': ' + xhr.responseText);
-                    //TODO display error to user
+                    ref.errorMsg = 'An error occurred';
 
                 }
             });
