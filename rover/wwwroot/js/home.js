@@ -4,6 +4,7 @@
         //TODO get urls from server using page first page load. on server ideally in a config file
         urlWebSvcRoverPath: 'https://localhost:5003/roverpath',
         urlWebSvcRoverImage: 'https://localhost:5003/roverimages',
+        urlWebSvcMission: 'https://localhost:5003/mission',
 
         disableMovementButtons: false,
         directions: ['North', 'South', 'East', 'West'],
@@ -308,48 +309,108 @@
         },
 
         launchMission: function () {
-            //TODO spinner and disable launch button waiting for server
-            this.serverGetScreenshot()
+            this.createMissionServer()
+                .then(this.getScreenshotServer);
         },
 
-        serverGetScreenshot: function() {
+        /* createMissionServer */
+        createMissionServer: function() {
             var ref = this;
-            var dirStrToChar = ref.dirStrToChar;
-            ref.disableMissionButton = true;
-            ref.isMissionInProgress = true;
-            ref.errorMsgMission = '';
 
-            var roverInput = ref.rover.input || '';
-            var startX = parseInt(ref.rover.startX) || 0;
-            var startY = parseInt(ref.rover.startY) || 0;
-            var startDir = ref.rover.startDir || '';
-            var gridWidth = parseInt(ref.grid.width) || 0;
-            var gridHeight = parseInt(ref.grid.height) || 0;
+            return new Promise(function (resolve, reject) {
 
-            $.ajax({
-                url: ref.urlWebSvcRoverImage,
-                data: {
-                    input: roverInput,
-                    startX: startX,
-                    startY: startY,
-                    startDir: dirStrToChar(startDir),
-                    gridWidth: gridWidth,
-                    gridHeight: gridHeight
-                },
-                type: 'GET',
-                success: function (data, status, xhr) {
-                    ref.isMissionInProgress = false;
-                    ref.showMissionResult = true;
-                    ref.screenshot = 'data:image/png;base64, ' + data;
-                },
-                error: function (xhr) {
-                    ref.isMissionInProgress = false;
-                    ref.disableMissionButton = false;
-                    ref.errorMsgMission = 'An error occurred';
-                    console.error('serverGetScreenshot status ' + xhr.status + ': ' + xhr.responseText);
-                }
+                ref.disableMissionButton = true;
+                ref.isMissionInProgress = true;
+                ref.errorMsgMission = '';
+
+                var rovers = ref.rovers || [];
+                var gridWidth = parseInt(ref.grid.width) || 0;
+                var gridHeight = parseInt(ref.grid.height) || 0;
+
+                $.ajax({
+                    url: ref.urlWebSvcMission,
+                    data: JSON.stringify({
+                        gridWidth: gridWidth,
+                        gridHeight: gridHeight,
+                        rovers: rovers,
+                    }),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    type: 'POST',
+                    success: function (data, status, xhr) {
+
+                        ref.isMissionInProgress = false;
+                        ref.showMissionResult = true;
+
+                        resolve();
+                    },
+                    error: function (xhr) {
+
+                        ref.isMissionInProgress = false;
+                        ref.disableMissionButton = false;
+                        ref.errorMsgMission = 'An error occurred';
+                        console.error('createMissionServer status ' + xhr.status + ': ' + xhr.responseText);
+
+                        reject();
+                    }
+                });
+
             });
-        }
+        },
+        /* createMissionServer END */
+
+
+        /* getScreenshotServer */
+        getScreenshotServer: function() {
+            var ref = this;
+
+            return new Promise( function(resolve, reject) {
+
+                var dirStrToChar = ref.dirStrToChar;
+                ref.disableMissionButton = true;
+                ref.isMissionInProgress = true;
+                ref.errorMsgMission = '';
+
+                var roverInput = ref.rover.input || '';
+                var startX = parseInt(ref.rover.startX) || 0;
+                var startY = parseInt(ref.rover.startY) || 0;
+                var startDir = ref.rover.startDir || '';
+                var gridWidth = parseInt(ref.grid.width) || 0;
+                var gridHeight = parseInt(ref.grid.height) || 0;
+
+                $.ajax({
+                    url: ref.urlWebSvcRoverImage,
+                    data: {
+                        input: roverInput,
+                        startX: startX,
+                        startY: startY,
+                        startDir: dirStrToChar(startDir),
+                        gridWidth: gridWidth,
+                        gridHeight: gridHeight
+                    },
+                    type: 'GET',
+                    success: function (data, status, xhr) {
+
+                        ref.isMissionInProgress = false;
+                        ref.showMissionResult = true;
+                        ref.screenshot = 'data:image/png;base64, ' + data;
+
+                        resolve();
+                    },
+                    error: function (xhr) {
+
+                        ref.isMissionInProgress = false;
+                        ref.disableMissionButton = false;
+                        ref.errorMsgMission = 'An error occurred';
+                        console.error('getScreenshotServer status ' + xhr.status + ': ' + xhr.responseText);
+
+                        reject();
+                    }
+                });
+
+            });
+        },
+        /* getScreenshotServer END */
 
     }
 
