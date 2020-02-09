@@ -3,6 +3,7 @@
     data: {
         //TODO get urls from server using page first page load. on server ideally in a config file
         urlWebSvcRoverPath: 'https://localhost:5003/roverpath',
+        urlWebSvcRoverImage: 'https://localhost:5003/roverimages',
 
         disableMovementButtons: false,
         directions: ['North', 'South', 'East', 'West'],
@@ -76,6 +77,7 @@
             var roverInput = (ref.rover.input || '') + newChar;
             var startX = parseInt(ref.rover.startX) || 0;
             var startY = parseInt(ref.rover.startY) || 0;
+            var startDir = ref.rover.startDir || '';
             var gridWidth = parseInt(ref.grid.width) || 0;
             var gridHeight = parseInt(ref.grid.height) || 0;
 
@@ -85,7 +87,7 @@
                     input: roverInput,
                     startX: startX,
                     startY: startY,
-                    startDir: dirStrToChar(ref.rover.startDir),
+                    startDir: dirStrToChar(startDir),
                     gridWidth: gridWidth,
                     gridHeight: gridHeight
                 }),
@@ -251,16 +253,33 @@
             this.serverGetScreenshot()
         },
 
-        serverGetScreenshot: function serverGetGrid(width, height) {
+        serverGetScreenshot: function() {
             var ref = this;
+            var dirStrToChar = ref.dirStrToChar;
+
+            var roverInput = ref.rover.input || '';
+            var startX = parseInt(ref.rover.startX) || 0;
+            var startY = parseInt(ref.rover.startY) || 0;
+            var startDir = ref.rover.startDir || '';
+            var gridWidth = parseInt(ref.grid.width) || 0;
+            var gridHeight = parseInt(ref.grid.height) || 0;
+
             $.ajax({
-                url: 'https://localhost:5003/roverimages',
+                url: ref.urlWebSvcRoverImage,
+                data: {
+                    input: roverInput,
+                    startX: startX,
+                    startY: startY,
+                    startDir: dirStrToChar(startDir),
+                    gridWidth: gridWidth,
+                    gridHeight: gridHeight
+                },
                 type: 'GET',
                 success: function (data, status, xhr) {
                     ref.screenshot = 'data:image/png;base64, ' + data;
                 },
                 error: function (xhr) {
-                    console.error('serverGetGrid status ' + xhr.status + ': ' + xhr.responseText);
+                    console.error('serverGetScreenshot status ' + xhr.status + ': ' + xhr.responseText);
                 }
             });
         }

@@ -7,39 +7,32 @@ namespace webSvc
 {
     public class RoverImages
     {
+        private readonly string marsGridImage = "logo.png";
+
         public RoverImages(string missionId) {
-            //TODO move stuff here
+            //TODO missionId
         }
 
-        public Bitmap getScreenshot()
+        public Bitmap getScreenshot(RoverPath roverPath)
         {
-            //TODO get saved values from mission.json
-            var gridWidth = 10;
-            var gridHeight = 10;
-            //hardcoded
-            var path = "logo.png";
-
-            using (var fileStream = File.OpenRead(path))
+            using (var fileStream = File.OpenRead(marsGridImage))
             {
                 var bmp = new Bitmap(fileStream);
-
-                var startPoint = new PathPoint(0, 0, "N");
-                var roverPath = new RoverPath(gridWidth, gridHeight, startPoint);
-                roverPath.createRoverPath("MRMMMMMMLMMMRMMMMMMMMMM");
                 var gridWidthPx = roverPath.gridWidthPx;
                 var gridHeightPx = roverPath.gridHeightPx;
 
                 var bmpOut = new Bitmap(bmp, new Size(gridWidthPx, gridHeightPx));
-                createRoverPathBmp(bmpOut, gridWidthPx, gridHeightPx, roverPath);
-
+                createRoverPathBmp(bmpOut, roverPath);
                 return bmpOut;
             }
         }
 
-        private void createRoverPathBmp(Bitmap bmp, int gridWidthPx, int gridHeightPx, RoverPath roverPath)
+        private void createRoverPathBmp(Bitmap bmp, RoverPath roverPath)
         {
             var cellSizePx = roverPath.cellSizePx;
             var gridHeight = roverPath.gridHeight;
+            var gridWidthPx = roverPath.gridWidthPx;
+            var gridHeightPx = roverPath.gridHeightPx;
             var roverPathCount = roverPath.GetNumPositions();
 
             for (var x = 0; x < gridWidthPx; x++)
@@ -68,7 +61,7 @@ namespace webSvc
 
         private int ConvertRoverPathToBmpYaxis(int yIndexRover, int roverGridHeight)
         {
-            return roverGridHeight - yIndexRover;
+            return roverGridHeight - 1 - yIndexRover;
         }
 
         private int getCellIndex(int pixelIndex, int cellSizePx)

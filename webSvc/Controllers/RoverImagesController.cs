@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Text;
+using webSvc.App;
 
 namespace webSvc.Controllers
 {
@@ -23,11 +24,17 @@ namespace webSvc.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get()
+        public ActionResult Get(string input, int startX, int startY, string startDir, int gridWidth, int gridHeight)
         {
-            var roverImages = new RoverImages("1");
-            var bitmap = roverImages.getScreenshot();
+            var inputInstructions = input ?? "";
+            var direction = startDir ?? "";
 
+            var roverImages = new RoverImages("1");
+            var startPoint = new PathPoint(startX, startY, direction);
+            var roverPath = new RoverPath(gridWidth, gridHeight, startPoint);
+            roverPath.createRoverPath(inputInstructions);
+
+            var bitmap = roverImages.getScreenshot(roverPath);
             using (var outStream = new MemoryStream())
             {
                 bitmap.Save(outStream, ImageFormat.Png);
