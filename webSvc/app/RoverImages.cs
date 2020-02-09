@@ -7,7 +7,7 @@ namespace webSvc
 {
     public class RoverImages
     {
-        private readonly string marsGridImage = "logo.png";
+        private readonly string marsGridImage = "mars.png";
 
         public RoverImages(string missionId) {
             //TODO missionId
