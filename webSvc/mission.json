@@ -1,1 +1,1 @@
-{"gridWidth":6,"gridHeight":6,"rovers":[{"firstX":0,"firstY":0,"firstDir":"East","lastX":2,"lastY":0,"lastDir":"East","input":"MM"}]}
+{"gridWidth":6,"gridHeight":6,"rovers":[{"firstX":0,"firstY":0,"firstDir":"North","lastX":4,"lastY":0,"lastDir":"East","input":"RMMMM"}]}

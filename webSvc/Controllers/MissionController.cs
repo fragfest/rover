@@ -43,7 +43,7 @@ namespace webSvc.Controllers
                 var resPoint = new MissionResPoint();
                 resPoint.firstX = firstPoint.X;
                 resPoint.firstY = firstPoint.Y;
-                resPoint.firstDir = firstPoint.Dir.ToString();
+                resPoint.firstDir =  startPoint.Dir.ToString();
                 resPoint.lastX = lastPoint.X;
                 resPoint.lastY = lastPoint.Y;
                 resPoint.lastDir = lastPoint.Dir.ToString();

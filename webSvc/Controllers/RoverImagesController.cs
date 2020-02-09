@@ -25,18 +25,15 @@ namespace webSvc.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get(string input, int startX, int startY, string startDir, int gridWidth, int gridHeight)
+        public ActionResult Get()
         {
-            var inputInstructions = input ?? "";
-            var direction = startDir ?? "";
-
             var json = System.IO.File.ReadAllText("mission.json");
             var missionRes = JsonConvert.DeserializeObject<MissionRes>(json);
 
-            var roverImages = new RoverImages("1");
-            //var startPoint = new PathPoint(startX, startY, direction);
-            //var roverPath = new RoverPath(gridWidth, gridHeight, startPoint);
-            //roverPath.createRoverPath(inputInstructions);
+            if (missionRes.rovers.Count == 0) {
+                return BadRequest();
+            }
+            var roverImages = new RoverImages();
 
             var bitmap = roverImages.getScreenshot(missionRes.gridWidth, missionRes.gridHeight, missionRes.rovers);
             using (var outStream = new MemoryStream())

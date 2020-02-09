@@ -8,6 +8,7 @@
 
         disableMovementButtons: false,
         directions: ['North', 'South', 'East', 'West'],
+        //TODO rename errorMsg
         errorMsg: '',
 
         showNewRover: false,
@@ -389,14 +390,6 @@
 
                 $.ajax({
                     url: ref.urlWebSvcRoverImage,
-                    data: {
-                        input: roverInput,
-                        startX: startX,
-                        startY: startY,
-                        startDir: dirStrToChar(startDir),
-                        gridWidth: gridWidth,
-                        gridHeight: gridHeight
-                    },
                     type: 'GET',
                     success: function (data, status, xhr) {
 
