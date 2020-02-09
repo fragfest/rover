@@ -117,7 +117,7 @@
             <table class="grid-input table table-bordered" align="left" v-bind:style="{ width: grid.widthPx + 'px' }">
                 <tbody>
                     <tr v-for="(h, y) in grid.height">
-                        <td v-for="(w, x) in grid.width" v-bind:class="{ 'path': isRoverCell(x, y) }">
+                        <td v-for="(w, x) in grid.width" v-bind:class="{ 'path': isPathCell(x, y) }">
                             <img v-show="isRoverCell(x, y)" src="~/images/robot.svg" alt="R" class="rover">
                             <div v-show="!isRoverCell(x, y)" class="rover">
                                 <span v-bind:class="{ 'fa fa-chevron-right': isNextCellRight(x, y) }"></span>

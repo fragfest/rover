@@ -11,18 +11,20 @@
             y: 0,
             dir: 'N',
             input: "",
+            //TODO inidicate that start* values need sanitizing
             startX: 0,
             startY: 0,
             startDir: 'North',
+            path: [],
         },
         grid: {
             maxDimension: 30,
             cellPx: 30,
-            widthInput: 10,
-            heightInput: 10,
+            widthInput: 6,
+            heightInput: 6,
             widthPx: 0,
-            width: 10,
-            height: 10,
+            width: 6,
+            height: 6,
         }
     },
     mounted: function () {
@@ -49,8 +51,12 @@
                     dir: dirStrToChar(pointServer.dir)
                 });
             });
+
             var last = path[path.length - 1];
-            this.updateRover(last.x, last.y, last.dir);
+            this.rover.x = last.x;
+            this.rover.y = last.y;
+            this.rover.dir = last.dir;
+            this.rover.path = path;
         },
 
         updateRoverPath: function (newChar) {
@@ -96,13 +102,20 @@
             });
         },
 
-        resetRecording: function() {
-            this.rover.input = "";
-        },
-
         /////////////////////////////////////////////////////////////////////
         // Build Grid
         /////////////////////////////////////////////////////////////////////
+
+        isPathCell: function (x, y) {
+            var match = point => {
+                return point.x === x && point.y === y;
+            };
+            var isStart = () => {
+                return parseInt(this.rover.startX) === x &&
+                    parseInt(this.rover.startY) === this.grid.height - 1 - y;
+            };
+            return this.rover.path.find(match) || isStart();
+        },
 
         isRoverCell: function (x, y) {
             if (this.rover.x === x && this.rover.y === y) {
@@ -151,13 +164,6 @@
         // Update
         /////////////////////////////////////////////////////////////////////
 
-    //TODO func needed?
-        updateRover: function (x, y, dir) {
-            this.rover.x = x;
-            this.rover.y = y;
-            this.rover.dir = dir;
-        },
-
         updateRoverStart: function () {
             var startY = parseInt(this.rover.startY) || 0;
             var startX = parseInt(this.rover.startX) || 0;
@@ -181,7 +187,8 @@
             this.rover.y = this.grid.height - startY - 1;
             this.rover.x = startX;
             this.rover.dir = this.dirStrToChar(this.rover.startDir);
-            this.resetRecording();
+            this.rover.input = "";
+            this.rover.path = [];
         },
 
         updateGridInput: function () {
