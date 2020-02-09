@@ -119,10 +119,16 @@
             var match = point => {
                 return point.x === x && point.y === y;
             };
+
             var isStart = () => {
-                return parseInt(this.rover.startX) === x &&
-                    parseInt(this.rover.startY) === this.grid.height - 1 - y;
+                var startX = this.rover.startX || 0;
+                var startY = this.rover.startY || 0;
+                var gridYmaxIndex = this.grid.height ? (this.grid.height - 1) : 0;
+
+                return parseInt(startX) === x &&
+                    parseInt(startY) === gridYmaxIndex - y;
             };
+
             return this.rover.path.find(match) || isStart();
         },
 
@@ -176,24 +182,27 @@
         updateRoverStart: function () {
             var startY = parseInt(this.rover.startY) || 0;
             var startX = parseInt(this.rover.startX) || 0;
-            if (startY < 0) {
+            var gridYmaxIndex = this.grid.height ? (this.grid.height - 1) : 0;
+            var gridXmaxIndex = this.grid.width ? (this.grid.width - 1) : 0;
+
+            if (startY <= 0) {
                 this.rover.startY = 0;
                 startY = 0;
             }
-            if (startY > this.grid.height - 1) {
-                this.rover.startY = this.grid.height - 1;
-                startY = this.grid.height - 1;
+            if (startY > gridYmaxIndex) {
+                this.rover.startY = gridYmaxIndex;
+                startY = gridYmaxIndex;
             }
-            if (startX < 0) {
+            if (startX <= 0) {
                 this.rover.startX = 0;
                 startX = 0;
             }
-            if (startX > this.grid.width - 1) {
-                this.rover.startX = this.grid.width - 1;
-                startX = this.grid.width - 1;
+            if (startX > gridXmaxIndex) {
+                this.rover.startX = gridXmaxIndex;
+                startX = gridXmaxIndex;
             }
 
-            this.rover.y = this.grid.height - startY - 1;
+            this.rover.y = gridYmaxIndex - startY;
             this.rover.x = startX;
             this.rover.dir = this.dirStrToChar(this.rover.startDir);
             this.rover.input = "";
