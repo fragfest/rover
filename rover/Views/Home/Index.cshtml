@@ -113,7 +113,7 @@
             </div>
 
         </div>
-        <!-- #################################################################################################### -->
+
         <!-- Grid -->
         <div class="col-lg-6">
             <h3>Rover Path</h3>
@@ -137,5 +137,24 @@
     </div>
     <!-- controls & grid row END-->
     <!-- #################################################################################################### -->
+    <hr>
 
-</div>
+    <div class="row">
+        <div class="col-lg-6">
+            <button type="button" class="btn btn-outline-info" v-on:click="launchMission" v-bind:disabled="disableMovementButtons">
+                <h4>Launch Mission</h4>
+            </button>
+        </div>
+        <div class="col-lg-6">
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-lg-6">
+        </div>
+        <div class="col-lg-6">
+            <img v-bind:src="screenshot">
+        </div>
+    </div>
+
+ </div>

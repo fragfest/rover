@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Drawing.Imaging;
+using System.Text;
 
 namespace webSvc.Controllers
 {
@@ -26,11 +27,16 @@ namespace webSvc.Controllers
         {
             var roverImages = new RoverImages("1");
             var bitmap = roverImages.getScreenshot();
+
             using (var outStream = new MemoryStream())
             {
                 bitmap.Save(outStream, ImageFormat.Png);
-                return File(outStream.ToArray(), "image/png");
+                var bytes = outStream.ToArray();
+                var base64 = Convert.ToBase64String(bytes);
+
+                return new FileStreamResult(new MemoryStream(Encoding.UTF8.GetBytes(base64)), "image/png;base64");
             }
         }
+
     }
 }

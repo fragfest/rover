@@ -30,8 +30,11 @@
             /* INPUTS which need cast */
             widthInput: 6,
             heightInput: 6,
-        }
+        },
+
+        screenshot:'',
     },
+
     mounted: function () {
         // origin (0,0) is defined in the bottom left (not top left)
 
@@ -243,17 +246,18 @@
         // Send mission, get screenshot
         /////////////////////////////////////////////////////////////////////
 
-        serverGetGrid: function serverGetGrid(width, height) {
+        launchMission: function () {
+            //TODO spinner and disable launch button waiting for server
+            this.serverGetScreenshot()
+        },
+
+        serverGetScreenshot: function serverGetGrid(width, height) {
+            var ref = this;
             $.ajax({
                 url: 'https://localhost:5003/roverimages',
-                //data: JSON.stringify({
-                //    var1: this.pageUrl,
-                //}),
-                //dataType: 'json',
-                //contentType: 'application/json; charset=utf-8',
                 type: 'GET',
                 success: function (data, status, xhr) {
-                    console.log('SUCCESS')
+                    ref.screenshot = 'data:image/png;base64, ' + data;
                 },
                 error: function (xhr) {
                     console.error('serverGetGrid status ' + xhr.status + ': ' + xhr.responseText);
@@ -263,4 +267,4 @@
 
     }
 
-});
+}); 
