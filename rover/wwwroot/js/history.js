@@ -5,6 +5,8 @@
         urlWebSvcRoverImage: 'https://localhost:5003/roverimages',
         urlWebSvcMission: 'https://localhost:5003/mission',
 
+        gridWidth: 0,
+        gridHeight: 0,
         reports: [],
         errorMsgMission: '',
         screenshot: '',
@@ -24,6 +26,8 @@
         createReport: function (missionRes) {
             var gridWidth = missionRes.gridWidth || 0;
             var gridHeight = missionRes.gridHeight || 0;
+            this.gridWidth = gridWidth;
+            this.gridHeight = gridHeight;
             var rovers = missionRes.rovers || [];
             this.reports = rovers;
         },

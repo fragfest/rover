@@ -93,7 +93,7 @@
         },
 
         /////////////////////////////////////////////////////////////////////
-        // Build Path, input recording
+        // Build path, Input recording
         /////////////////////////////////////////////////////////////////////
 
         buildPathFromServer: function (pathServer) {
@@ -308,8 +308,6 @@
         },
 
         createReport: function (missionRes) {
-            var gridWidth = missionRes.gridWidth || 0;
-            var gridHeight = missionRes.gridHeight || 0;
             var rovers = missionRes.rovers || [];
             this.reports = rovers;
         },

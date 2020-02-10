@@ -36,11 +36,11 @@ namespace webSvc.Controllers
             roverPath.createRoverPath(input);
             var pathCount = roverPath.GetNumPositions();
 
-            var path = new List<ResPoint>();
+            var path = new List<PathResPoint>();
             for (var i = 0; i < pathCount; i++)
             {
                 var pathPoint = roverPath.GetPathPoint(i);
-                var point = new ResPoint();
+                var point = new PathResPoint();
                 point.x = pathPoint.X;
                 point.y = pathPoint.Y;
                 point.dir = pathPoint.Dir.ToString();
@@ -58,10 +58,10 @@ namespace webSvc.Controllers
     public class PathRes
     {
         public string input { get; set; }
-        public List<ResPoint> path { get; set; }
+        public List<PathResPoint> path { get; set; }
     }
 
-    public class ResPoint
+    public class PathResPoint
     {
         public int x { get; set; }
         public int y { get; set; }

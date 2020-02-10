@@ -37,7 +37,7 @@ namespace webSvc.Controllers
         {
             var gridWidth = pathReq.gridWidth;
             var gridHeight = pathReq.gridHeight;
-            var lastPoints = new List<MissionResPoint>();
+            var resPoints = new List<MissionResPoint>();
 
             foreach (var rover in pathReq.rovers)
             {
@@ -56,13 +56,13 @@ namespace webSvc.Controllers
                 resPoint.lastY = lastPoint.Y;
                 resPoint.lastDir = lastPoint.Dir.ToString();
                 resPoint.input = rover.input;
-                lastPoints.Add(resPoint);
+                resPoints.Add(resPoint);
             }
 
             var res = new MissionRes();
             res.gridWidth = gridWidth;
             res.gridHeight = gridHeight;
-            res.rovers = lastPoints;
+            res.rovers = resPoints;
 
             string resJson = JsonConvert.SerializeObject(res);
             System.IO.File.WriteAllText("mission.json", resJson);
