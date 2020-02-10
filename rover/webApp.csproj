@@ -11,7 +11,6 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'rover' ">
     <StartAction>Project</StartAction>
     <ApplicationURL>http://localhost:5000</ApplicationURL>
-    <LaunchBrowser></LaunchBrowser>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Views\History\" />
