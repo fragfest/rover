@@ -7,8 +7,8 @@ namespace webSvc.App
     public class RoverPath
     {
         public readonly int cellSizePx = 30;
-        public readonly int imageWidthPx = 640;
-        public readonly int imageHeightPx = 480;
+        public readonly int imageWidthPx = 965;
+        public readonly int imageHeightPx = 543;
 
         public readonly int gridWidth;
         public readonly int gridHeight;

@@ -1,7 +1,6 @@
 ﻿var home = new Vue({
     el: '#home',
     data: {
-        //TODO get urls from server using first page load. ideally from a config file
         urlWebSvcRoverPath: 'https://localhost:5003/roverpath',
         urlWebSvcRoverImage: 'https://localhost:5003/roverimages',
         urlWebSvcMission: 'https://localhost:5003/mission',
@@ -27,7 +26,7 @@
         },
 
         grid: {
-            maxDimension: 30,
+            maxDimension: 15,
             cellPx: 30,
             widthPx: 0,
             width: 6,

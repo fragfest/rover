@@ -1,7 +1,6 @@
 ﻿var home = new Vue({
     el: '#history',
     data: {
-        //TODO get urls from server using first page load. ideally from a config file
         urlWebSvcRoverImage: 'https://localhost:5003/roverimages',
         urlWebSvcMission: 'https://localhost:5003/mission',
 
