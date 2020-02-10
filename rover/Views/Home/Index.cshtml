@@ -192,10 +192,15 @@
                 <div class="col-lg-12">
                     <p><strong>Rover {{i + 1}}</strong></p>
                     <p>start coordinates: ( {{r.firstX}}, {{r.firstY}}, {{r.firstDir}} )</p>
-                    <textarea rows="1" class="recordings" v-model="r.input" disabled ></textarea>
-                    <p>end coordinates: ( {{r.lastX}}, {{r.lastY}}, {{r.lastDir}} )</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Instructions</span>
+                        </div>
+                        <textarea rows="1" class="recordings" v-model="r.input" disabled></textarea>
+                    </div>
+                        <p>end coordinates: ( {{r.lastX}}, {{r.lastY}}, {{r.lastDir}} )</p>
+                    </div>
                 </div>
-            </div>
         </div>
         <div class="col-lg-6">
             <h4>Mission Screenshot</h4>
