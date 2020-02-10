@@ -1,6 +1,7 @@
 ﻿var home = new Vue({
     el: '#home',
     data: {
+    /* TODO URLs should come from a config file */
         urlWebSvcRoverPath: 'https://localhost:5003/roverpath',
         urlWebSvcRoverImage: 'https://localhost:5003/roverimages',
         urlWebSvcMission: 'https://localhost:5003/mission',
